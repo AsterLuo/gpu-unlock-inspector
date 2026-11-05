@@ -1,0 +1,147 @@
+[    389ms] INFO : loader::logging: log file \loader.log opened on boot volume
+[    390ms] INFO : loader::logging: nv-uefi-unloader v2.1.9 (M0 skeleton: read-only)
+[   1369ms] INFO : loader: WATCHDOG: disabled
+[   1375ms] INFO : loader::banner: ==================================================
+[   1376ms] INFO : loader::banner:  nv-uefi-unlocker v2.1.9 (built Sun 2026-11-01 03:42:28 +08:00)
+[   1377ms] INFO : loader::banner:  ** TX BUILD: CONTAINS GPU-WRITE PATHS **
+[   1379ms] INFO : loader::banner:  transaction: claim->gfw->fwsec->booter->selectors->flr
+[   1380ms] INFO : loader::banner: ======== PRESS SPACE or ENTER to CONTINUE ========
+[   1382ms] INFO : loader::banner: ======== PRESS SPACE or ENTER to CONTINUE ========
+[   1383ms] INFO : loader::banner: ======== PRESS SPACE or ENTER to CONTINUE ========
+[   1384ms] INFO : loader::banner:   other key or 30s no-key = ABORT; unlocks NOTHING
+[   1386ms] INFO : loader::banner:   other key or 30s no-key = ABORT; unlocks NOTHING
+[   1387ms] INFO : loader::banner:   other key or 30s no-key = ABORT; unlocks NOTHING
+[   1389ms] INFO : loader::banner:  armed: \i_know_what_i_am_doing.txt = 5s auto-run, any key aborts
+[   1394ms] INFO : loader::banner:  multi-GPU: no marker = every supported card in order;
+[   1402ms] INFO : loader::banner:             \tx-select-bdf.txt (bb:dd.f) pins exactly one
+[   1416ms] INFO : loader::banner:  failure = no retry (per card; the next card still runs)
+[   1424ms] INFO : loader::banner: ==================================================
+[   1433ms] INFO : loader::banner: PHASE: CONFIRM
+[   1442ms] INFO : loader: CONFIRM: no armed marker - Space/Enter/30s confirm semantics
+[  31450ms] INFO : loader::keywait: CONFIRM: 30s timeout - ABORT to Windows, NOTHING was unlocked this boot (zero GPU writes)
+[  31459ms] INFO : loader::pci: PHASE: ENUMERATE (read-only)
+[  31470ms] INFO : loader::pci: ENUMERATE: 22 PciIo handles
+[  31474ms] INFO : loader::pci: PCI 0000:00:00.0 8086:a703 class 000600
+[  31478ms] INFO : loader::pci: PCI 0000:00:01.0 8086:a70d class 000604
+[  31483ms] INFO : loader::pci: PCI 0000:01:00.0 10de:2482 class 000300
+[  31487ms] INFO : loader::pci: NVIDIA GPU? 0000:01:00.0 device 2482
+[  31491ms] INFO : loader::pci:   BAR0 32-bit mem base 0x50000000
+[  31495ms] INFO : loader::pci:   BAR1 64-bit mem base 0x0000004000000000
+[  31499ms] INFO : loader::pci:   BAR3 64-bit mem base 0x0000004200000000
+[  31503ms] INFO : loader::pci:   BAR5 io base 0x5000
+[  31507ms] INFO : loader::pci:   cap 0x01 @0x60
+[  31515ms] INFO : loader::pci:   cap 0x05 @0x68
+[  31518ms] INFO : loader::pci:   PCIe cap @0x78: DEVCAP 0x112c8de1 (FLR yes) LINKCAP 0x00454d04
+[  31531ms] INFO : loader::pci:   cap 0x09 @0xb4
+[  31534ms] INFO : loader::pci:   ext cap 0x0002 @0x0100
+[  31538ms] INFO : loader::pci:   ext cap 0x0018 @0x0250
+[  31541ms] INFO : loader::pci:   ext cap 0x001e @0x0258
+[  31544ms] INFO : loader::pci:   ext cap 0x0004 @0x0128
+[  31547ms] INFO : loader::pci:   ext cap 0x0001 @0x0420
+[  31550ms] INFO : loader::pci:   ext cap 0x000b @0x0600
+[  31553ms] INFO : loader::pci:   ext cap 0x0019 @0x0900
+[  31556ms] INFO : loader::pci:   ReBAR cap @0x0bb0: 3 resizable BAR(s)
+[  31559ms] INFO : loader::pci:     BAR0 supported [16M] current 16 MiB (size_idx 4, ctrl 0x00000460 cap 0x00000100)
+[  31564ms] INFO : loader::pci:     BAR1 supported [8G/4G/2G/1G/512M/256M/128M/64M] current 8192 MiB (size_idx 13, ctrl 0x00000d01 cap 0x0003fc00)
+[  31571ms] INFO : loader::pci:     BAR3 supported [32M] current 32 MiB (size_idx 5, ctrl 0x00000503 cap 0x00000200)
+[  31577ms] INFO : loader::pci:   ext cap 0x0026 @0x0c1c
+[  31580ms] INFO : loader::pci:   ext cap 0x0027 @0x0d00
+[  31588ms] INFO : loader::pci:   ext cap 0x0025 @0x0e00
+[  31591ms] INFO : loader::pci: PCI 0000:01:00.1 10de:228b class 000403
+[  31594ms] INFO : loader::pci: NVIDIA fn 0000:01:00.1 device 228b
+[  31598ms] INFO : loader::pci:   BAR0 32-bit mem base 0x51080000
+[  31601ms] INFO : loader::pci:   cap 0x01 @0x60
+[  31604ms] INFO : loader::pci:   cap 0x05 @0x68
+[  31607ms] INFO : loader::pci:   PCIe cap @0x78: DEVCAP 0x012c8de1 (FLR no) LINKCAP 0x00454d04
+[  31628ms] INFO : loader::pci:   ext cap 0x0001 @0x0100
+[  31631ms] INFO : loader::pci:   ext cap 0x0025 @0x0160
+[  31634ms] INFO : loader::pci: PCI 0000:00:06.0 8086:a74d class 000604
+[  31638ms] INFO : loader::pci: PCI 0000:02:00.0 1e4b:1602 class 000108
+[  31641ms] INFO : loader::pci: PCI 0000:00:14.0 8086:7ae0 class 000c03
+[  31645ms] INFO : loader::pci: PCI 0000:00:14.2 8086:7aa7 class 000500
+[  31649ms] INFO : loader::pci: PCI 0000:00:15.0 8086:7acc class 000c80
+[  31652ms] INFO : loader::pci: PCI 0000:00:16.0 8086:7ae8 class 000780
+[  31656ms] INFO : loader::pci: PCI 0000:00:17.0 8086:7ae2 class 000106
+[  31664ms] INFO : loader::pci: PCI 0000:00:1a.0 8086:7ac8 class 000604
+[  31667ms] INFO : loader::pci: PCI 0000:03:00.0 1e4b:1602 class 000108
+[  31670ms] INFO : loader::pci: PCI 0000:00:1c.0 8086:7aba class 000604
+[  31673ms] INFO : loader::pci: PCI 0000:04:00.0 10ec:8125 class 000200
+[  31676ms] INFO : loader::pci: PCI 0000:00:1c.3 8086:7abb class 000604
+[  31679ms] INFO : loader::pci: PCI 0000:05:00.0 8086:2725 class 000280
+[  31682ms] INFO : loader::pci: PCI 0000:00:1d.0 8086:7ab0 class 000604
+[  31684ms] INFO : loader::pci: PCI 0000:00:1f.0 8086:7a84 class 000601
+[  31687ms] INFO : loader::pci: PCI 0000:00:1f.3 8086:7ad0 class 000403
+[  31690ms] INFO : loader::pci: PCI 0000:00:1f.4 8086:7aa3 class 000c05
+[  31693ms] INFO : loader::pci: PCI 0000:00:1f.5 8086:7aa4 class 000c80
+[  31695ms] INFO : loader::gop: PHASE: GOP-PROBE (read-only)
+[  31704ms] INFO : loader::gop: GOP-PROBE: 2 GOP handles
+[  31706ms] INFO : loader::gop: GOP handle Handle(0x40808b18): 2560x1440 Bgr
+[  31709ms] INFO : loader::gop: GOP handle Handle(0x40805618): 2560x1440 BltOnly
+[  31713ms] INFO : loader::sample: PHASE: SAMPLE (M1 read-only cold state)
+[  31728ms] INFO : loader::sample: SAMPLE: GPU 10de:2482 @ 0000:01:00.0
+[  31730ms] INFO : loader::sample: SAMPLE PMC_BOOT_0 chip-id = 0xb74000a1 [ok]
+[  31733ms] INFO : loader::sample: SAMPLE FB_SIZE_MIB 0x1183a4 = 0x00002000 [ok]
+[  31738ms] INFO : loader::sample: SAMPLE VGA_WORKSPACE 0x625f04 = 0x00000001 [ok]
+[  31743ms] INFO : loader::sample: SAMPLE GFW_PLM 0x118128 = 0x00008b8f [ok]
+[  31746ms] INFO : loader::sample: SAMPLE GFW_SCRATCH 0x118234 = 0x000003ff [ok]
+[  31752ms] INFO : loader::sample: SAMPLE GSP_CPUCTL 0x110100 = 0x00000010 [ok]
+[  31756ms] INFO : loader::sample: SAMPLE PGC6_BSI_SCRATCH15 0x1180fc = 0x201001bf [ok]
+[  31762ms] INFO : loader::sample: SAMPLE MMU_PLM 0x1fa7c8 = 0x0045cb8f [ok]
+[  31766ms] INFO : loader::sample: SAMPLE MMU_LOCK_LO 0x1fa82c = 0x00100000 [ok]
+[  31772ms] INFO : loader::sample: SAMPLE MMU_LOCK_HI 0x1fa830 = 0x01effff0 [ok]
+[  31779ms] INFO : loader::sample: SAMPLE WPR2_LO 0x1fa824 = 0x1ffffe00 [ok]
+[  31784ms] INFO : loader::sample: SAMPLE WPR2_HI 0x1fa828 = 0x00000000 [ok]
+[  31788ms] INFO : loader::sample: SAMPLE SEC2_CPUCTL 0x840100 = 0xbadf5620 [BADF_VARIANT]
+[  31796ms] INFO : loader::sample: SAMPLE FUSE_OPT_FEAT_OVR_DISABLE 0x8203f0 = 0x00000000 [ok]
+[  31803ms] INFO : loader::sample: SAMPLE FUSE_VER 0x824140 = 0x00000003 [ok]
+[  31814ms] INFO : loader::sample: SAMPLE FUSE_VER_DECODE 0x8241c0 = 0x00000003 [ok]
+[  31822ms] INFO : loader::sample: SAMPLE AD1xx CYA 0x88724 = 0x00000028 [ok]
+[  31826ms] INFO : loader::sample: SAMPLE AD1xx CFG 0x88dcc = 0x80000007 [ok]
+[  31831ms] INFO : loader::sample: SAMPLE AD1xx XVE_PLM 0x88ff4 = 0xffffff8f [ok]
+[  31838ms] INFO : loader::sample: SAMPLE AD1xx BAR1_CAP_MIRROR 0x88bbc = 0x0003fc00 [ok]
+[  31846ms] INFO : loader::sample: SAMPLE ADA WPR_PLM 0x1fa7c4 = 0x0004cb8f [ok]
+[  31854ms] INFO : loader::sample: SAMPLE ADA WPRCFG_PLM 0x1fa7cc = 0x0004cb8f [ok]
+[  31861ms] INFO : loader::sample: SAMPLE ADA FBPA_PLM 0x9a0148 = 0xffffff0f [ok]
+[  31869ms] INFO : loader::sample: SAMPLE TU10x FEAT_PLM 0x409650 = 0xbadf5040 [PRIV_VIOLATION]
+[  31877ms] INFO : loader::sample: SAMPLE TU10x FEAT_SS0 0x409664 = 0xbadf5040 [PRIV_VIOLATION]
+[  31886ms] INFO : loader::sample: SAMPLE TU10x FEAT_READOUT 0x409668 = 0xbadf5040 [PRIV_VIOLATION]
+[  31894ms] INFO : loader::sample: SAMPLE XP3G PLM0 0x8e1b0 = 0xffffff8f [ok]
+[  31899ms] INFO : loader::sample: SAMPLE XP3G PLMC 0x8e1bc = 0xffffffcf [ok]
+[  31904ms] INFO : loader::sample: SAMPLE XP3G OVR0 0x8e110 = 0x00000000 [ok]
+[  31908ms] INFO : loader::sample: SAMPLE XP3G VAL0 0x8e120 = 0x00000000 [ok]
+[  31913ms] INFO : loader::sample: SAMPLE XVE LNKCAP 0x88084 = 0x00454d04 [ok]
+[  31931ms] INFO : loader::sample: SAMPLE XVE LNKCTL 0x88088 = 0x11040140 [ok]
+[  31935ms] INFO : loader::sample: SAMPLE XVE LNKCAP2 0x880a4 = 0x0180001e [ok]
+[  31940ms] INFO : loader::sample: SAMPLE XVE LNKCTL2 0x880a8 = 0x001e0004 [ok]
+[  31944ms] INFO : loader::sample: SAMPLE LNK MISC_1 0x8841c = 0x20360500 [ok]
+[  31948ms] INFO : loader::sample: SAMPLE LNK VSEC_HIER 0x88610 = 0x00001001 [ok]
+[  31956ms] INFO : loader::sample: SAMPLE LNK LTSSM_KICK 0x8872c = 0x00000000 [ok]
+[  31963ms] INFO : loader::sample: SAMPLE LNK LINK_CONFIG_0 0x8c040 = 0x80005800 [ok]
+[  31970ms] INFO : loader::sample: SAMPLE LNK PL_LINK_RATE 0x8c1c0 = 0x00040000 [ok]
+[  31978ms] INFO : loader::sample: SAMPLE LNK CYA_DISG2 0x8c2c0 = 0x00000001 [ok]
+[  31985ms] INFO : loader::sample: SAMPLE FEAT sweep 0x823800-0x82382f+0x823b00 (dword stride): 13 ok / 0 badf / 0 all-ones / 0 read-errors
+[  31993ms] INFO : loader::sample: SAMPLE FEAT 0x823800 = 0xffffff8f [ok]
+[  31997ms] INFO : loader::sample: SAMPLE FEAT 0x823804 = 0xffffff8f [ok]
+[  32001ms] INFO : loader::sample: SAMPLE FEAT 0x823808 = 0x00100380 [ok]
+[  32005ms] INFO : loader::sample: SAMPLE FEAT 0x82380c = 0x00888888 [ok]
+[  32009ms] INFO : loader::sample: SAMPLE FEAT 0x823810 = 0x002aaaaa [ok]
+[  32013ms] INFO : loader::sample: SAMPLE FEAT 0x823814 = 0x00000233 [ok]
+[  32022ms] INFO : loader::sample: SAMPLE FEAT 0x823818 = 0x00400080 [ok]
+[  32025ms] INFO : loader::sample: SAMPLE FEAT 0x82381c = 0x10200073 [ok]
+[  32029ms] INFO : loader::sample: SAMPLE FEAT 0x823820 = 0x00000007 [ok]
+[  32033ms] INFO : loader::sample: SAMPLE FEAT 0x823824 = 0x00000001 [ok]
+[  32037ms] INFO : loader::sample: SAMPLE FEAT 0x823828 = 0x00000000 [ok]
+[  32040ms] INFO : loader::sample: SAMPLE FEAT 0x82382c = 0x00000008 [ok]
+[  32044ms] INFO : loader::sample: SAMPLE FEAT 0x823b00 = 0x00004b8f [ok]
+[  32047ms] INFO : loader::sample: SAMPLE FEAT_READOUT_1 = 0x00400080 (0 = no compute throttle active)
+[  32054ms] INFO : loader::sample: SAMPLE PSTRAPS SET0 0x101000 = 0x00400080 [ok] / SET1 0x10100c = 0x02013000 [ok]
+[  32060ms] INFO : loader::sample: SAMPLE PSTRAPS decode: BAR1 index 0 = 64MiB  BAR0 index 0 (16MiB<<idx)  BAR3=2xBAR0  override_en=0 (0 = ROM straps win on reset)
+[  32081ms] INFO : loader::sample: SAMPLE NV_PROM first 0x10000 bytes: crc32 0x2a1e8c88, magic 0xeb7faa55
+[  32088ms] INFO : loader::sample: SAMPLE complete (read-only, nothing restored because nothing touched)
+[  32094ms] INFO : loader::chainload: PHASE: CHAIN
+[  32104ms] INFO : loader::chainload: CHAIN: reconnect pass over 22 PciIo handles (NVIDIA display skipped)
+[  32115ms] INFO : loader::chainload: CHAIN: reconnect skipped on NVIDIA display Handle(0x409f4f98)
+[  33985ms] INFO : loader::chainload: CHAIN: reconnect pass done
+[  34294ms] INFO : loader::chainload: CHAIN: 8 SimpleFileSystem handles
+[  34304ms] INFO : loader::chainload: CHAIN: loader found on Handle(0x3e15ba98): \EFI\Microsoft\Boot\bootmgfw.efi
+[  34319ms] INFO : loader::chainload: CHAIN: LoadImage (FromDevicePath)

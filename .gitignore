@@ -1,0 +1,44 @@
+# ---- 构建产物 ----
+build/
+dist/
+*.spec.bak
+_build_deps/
+_tcl/
+
+# ---- 运行时数据（含本机信息，切勿提交）----
+gpu_inspector.log
+gpu_inspector.log.*
+gpu_inspector_crash.log
+gpu_inspector_records.json
+gpu_inspector_config.json
+*.bak
+backups/
+
+# ---- 本地截图 / 草稿 ----
+/*.png
+/*.jpg
+/docs/images/chk*
+!docs/images/0*.png
+!docs/images/1*.png
+
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# ---- 工具资产（运行时按需下载，不入库）----
+tools/
+*.exe
+!build.bat
+
+# ---- 编辑器 / 系统 ----
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini

@@ -1,0 +1,434 @@
+[    127ms] INFO : loader::logging: log file \loader.log opened on boot volume
+[    128ms] INFO : loader::logging: nv-uefi-unloader v2.1.9 (M0 skeleton: read-only)
+[    152ms] INFO : loader: WATCHDOG: disabled
+[    163ms] INFO : loader::banner: ==================================================
+[    164ms] INFO : loader::banner:  nv-uefi-unlocker v2.1.9 (built Sun 2026-11-01 03:42:28 +08:00)
+[    166ms] INFO : loader::banner:  ** TX BUILD: CONTAINS GPU-WRITE PATHS **
+[    167ms] INFO : loader::banner:  transaction: claim->gfw->fwsec->booter->selectors->flr
+[    168ms] INFO : loader::banner: ======== PRESS SPACE or ENTER to CONTINUE ========
+[    170ms] INFO : loader::banner: ======== PRESS SPACE or ENTER to CONTINUE ========
+[    171ms] INFO : loader::banner: ======== PRESS SPACE or ENTER to CONTINUE ========
+[    173ms] INFO : loader::banner:   other key or 30s no-key = ABORT; unlocks NOTHING
+[    174ms] INFO : loader::banner:   other key or 30s no-key = ABORT; unlocks NOTHING
+[    175ms] INFO : loader::banner:   other key or 30s no-key = ABORT; unlocks NOTHING
+[    177ms] INFO : loader::banner:  armed: \i_know_what_i_am_doing.txt = 5s auto-run, any key aborts
+[    182ms] INFO : loader::banner:  multi-GPU: no marker = every supported card in order;
+[    190ms] INFO : loader::banner:             \tx-select-bdf.txt (bb:dd.f) pins exactly one
+[    209ms] INFO : loader::banner:  failure = no retry (per card; the next card still runs)
+[    217ms] INFO : loader::banner: ==================================================
+[    225ms] INFO : loader::banner: PHASE: CONFIRM
+[    240ms] INFO : loader: CONFIRM: \i_know_what_i_am_doing.txt present - ARMED: 5s countdown auto-runs, ANY key aborts
+[    248ms] INFO : loader::tx_prep: PREP: enumerate begin
+[    253ms] INFO : loader::pci: PHASE: ENUMERATE (read-only)
+[    268ms] INFO : loader::pci: ENUMERATE: 22 PciIo handles
+[    272ms] INFO : loader::pci: PCI 0000:00:00.0 8086:a703 class 000600
+[    276ms] INFO : loader::pci: PCI 0000:00:01.0 8086:a70d class 000604
+[    280ms] INFO : loader::pci: PCI 0000:01:00.0 10de:2482 class 000300
+[    284ms] INFO : loader::pci: NVIDIA GPU? 0000:01:00.0 device 2482
+[    288ms] INFO : loader::pci:   BAR0 32-bit mem base 0x50000000
+[    292ms] INFO : loader::pci:   BAR1 64-bit mem base 0x0000004000000000
+[    296ms] INFO : loader::pci:   BAR3 64-bit mem base 0x0000004200000000
+[    300ms] INFO : loader::pci:   BAR5 io base 0x5000
+[    304ms] INFO : loader::pci:   cap 0x01 @0x60
+[    325ms] INFO : loader::pci:   cap 0x05 @0x68
+[    328ms] INFO : loader::pci:   PCIe cap @0x78: DEVCAP 0x112c8de1 (FLR yes) LINKCAP 0x00454d04
+[    345ms] INFO : loader::pci:   cap 0x09 @0xb4
+[    348ms] INFO : loader::pci:   ext cap 0x0002 @0x0100
+[    352ms] INFO : loader::pci:   ext cap 0x0018 @0x0250
+[    355ms] INFO : loader::pci:   ext cap 0x001e @0x0258
+[    358ms] INFO : loader::pci:   ext cap 0x0004 @0x0128
+[    361ms] INFO : loader::pci:   ext cap 0x0001 @0x0420
+[    364ms] INFO : loader::pci:   ext cap 0x000b @0x0600
+[    366ms] INFO : loader::pci:   ext cap 0x0019 @0x0900
+[    369ms] INFO : loader::pci:   ReBAR cap @0x0bb0: 3 resizable BAR(s)
+[    372ms] INFO : loader::pci:     BAR0 supported [16M] current 16 MiB (size_idx 4, ctrl 0x00000460 cap 0x00000100)
+[    378ms] INFO : loader::pci:     BAR1 supported [8G/4G/2G/1G/512M/256M/128M/64M] current 8192 MiB (size_idx 13, ctrl 0x00000d01 cap 0x0003fc00)
+[    384ms] INFO : loader::pci:     BAR3 supported [32M] current 32 MiB (size_idx 5, ctrl 0x00000503 cap 0x00000200)
+[    390ms] INFO : loader::pci:   ext cap 0x0026 @0x0c1c
+[    393ms] INFO : loader::pci:   ext cap 0x0027 @0x0d00
+[    406ms] INFO : loader::pci:   ext cap 0x0025 @0x0e00
+[    409ms] INFO : loader::pci: PCI 0000:01:00.1 10de:228b class 000403
+[    413ms] INFO : loader::pci: NVIDIA fn 0000:01:00.1 device 228b
+[    416ms] INFO : loader::pci:   BAR0 32-bit mem base 0x51080000
+[    419ms] INFO : loader::pci:   cap 0x01 @0x60
+[    422ms] INFO : loader::pci:   cap 0x05 @0x68
+[    426ms] INFO : loader::pci:   PCIe cap @0x78: DEVCAP 0x012c8de1 (FLR no) LINKCAP 0x00454d04
+[    458ms] INFO : loader::pci:   ext cap 0x0001 @0x0100
+[    461ms] INFO : loader::pci:   ext cap 0x0025 @0x0160
+[    464ms] INFO : loader::pci: PCI 0000:00:06.0 8086:a74d class 000604
+[    468ms] INFO : loader::pci: PCI 0000:02:00.0 1e4b:1602 class 000108
+[    471ms] INFO : loader::pci: PCI 0000:00:14.0 8086:7ae0 class 000c03
+[    475ms] INFO : loader::pci: PCI 0000:00:14.2 8086:7aa7 class 000500
+[    478ms] INFO : loader::pci: PCI 0000:00:15.0 8086:7acc class 000c80
+[    482ms] INFO : loader::pci: PCI 0000:00:16.0 8086:7ae8 class 000780
+[    485ms] INFO : loader::pci: PCI 0000:00:17.0 8086:7ae2 class 000106
+[    499ms] INFO : loader::pci: PCI 0000:00:1a.0 8086:7ac8 class 000604
+[    502ms] INFO : loader::pci: PCI 0000:03:00.0 1e4b:1602 class 000108
+[    505ms] INFO : loader::pci: PCI 0000:00:1c.0 8086:7aba class 000604
+[    508ms] INFO : loader::pci: PCI 0000:04:00.0 10ec:8125 class 000200
+[    511ms] INFO : loader::pci: PCI 0000:00:1c.3 8086:7abb class 000604
+[    514ms] INFO : loader::pci: PCI 0000:05:00.0 8086:2725 class 000280
+[    517ms] INFO : loader::pci: PCI 0000:00:1d.0 8086:7ab0 class 000604
+[    520ms] INFO : loader::pci: PCI 0000:00:1f.0 8086:7a84 class 000601
+[    523ms] INFO : loader::pci: PCI 0000:00:1f.3 8086:7ad0 class 000403
+[    525ms] INFO : loader::pci: PCI 0000:00:1f.4 8086:7aa3 class 000c05
+[    528ms] INFO : loader::pci: PCI 0000:00:1f.5 8086:7aa4 class 000c80
+[    580ms] INFO : loader::tx_prep: PREP: gop-probe begin
+[    583ms] INFO : loader::gop: PHASE: GOP-PROBE (read-only)
+[    596ms] INFO : loader::gop: GOP-PROBE: 2 GOP handles
+[    598ms] INFO : loader::gop: GOP handle Handle(0x40808b18): 2560x1440 Bgr
+[    601ms] INFO : loader::gop: GOP handle Handle(0x40805618): 2560x1440 BltOnly
+[    665ms] INFO : loader::tx_prep: PREP: sample begin
+[    667ms] INFO : loader::sample: PHASE: SAMPLE (M1 read-only cold state)
+[    680ms] INFO : loader::sample: SAMPLE: GPU 10de:2482 @ 0000:01:00.0
+[    683ms] INFO : loader::sample: SAMPLE PMC_BOOT_0 chip-id = 0xb74000a1 [ok]
+[    686ms] INFO : loader::sample: SAMPLE FB_SIZE_MIB 0x1183a4 = 0x00002000 [ok]
+[    691ms] INFO : loader::sample: SAMPLE VGA_WORKSPACE 0x625f04 = 0x00000001 [ok]
+[    696ms] INFO : loader::sample: SAMPLE GFW_PLM 0x118128 = 0x00008b8f [ok]
+[    700ms] INFO : loader::sample: SAMPLE GFW_SCRATCH 0x118234 = 0x000003ff [ok]
+[    705ms] INFO : loader::sample: SAMPLE GSP_CPUCTL 0x110100 = 0x00000010 [ok]
+[    709ms] INFO : loader::sample: SAMPLE PGC6_BSI_SCRATCH15 0x1180fc = 0x201001bf [ok]
+[    715ms] INFO : loader::sample: SAMPLE MMU_PLM 0x1fa7c8 = 0x0045cb8f [ok]
+[    719ms] INFO : loader::sample: SAMPLE MMU_LOCK_LO 0x1fa82c = 0x00100000 [ok]
+[    726ms] INFO : loader::sample: SAMPLE MMU_LOCK_HI 0x1fa830 = 0x01effff0 [ok]
+[    733ms] INFO : loader::sample: SAMPLE WPR2_LO 0x1fa824 = 0x1ffffe00 [ok]
+[    737ms] INFO : loader::sample: SAMPLE WPR2_HI 0x1fa828 = 0x00000000 [ok]
+[    742ms] INFO : loader::sample: SAMPLE SEC2_CPUCTL 0x840100 = 0xbadf5620 [BADF_VARIANT]
+[    759ms] INFO : loader::sample: SAMPLE FUSE_OPT_FEAT_OVR_DISABLE 0x8203f0 = 0x00000000 [ok]
+[    767ms] INFO : loader::sample: SAMPLE FUSE_VER 0x824140 = 0x00000003 [ok]
+[    771ms] INFO : loader::sample: SAMPLE FUSE_VER_DECODE 0x8241c0 = 0x00000003 [ok]
+[    779ms] INFO : loader::sample: SAMPLE AD1xx CYA 0x88724 = 0x00000028 [ok]
+[    783ms] INFO : loader::sample: SAMPLE AD1xx CFG 0x88dcc = 0x80000007 [ok]
+[    788ms] INFO : loader::sample: SAMPLE AD1xx XVE_PLM 0x88ff4 = 0xffffff8f [ok]
+[    795ms] INFO : loader::sample: SAMPLE AD1xx BAR1_CAP_MIRROR 0x88bbc = 0x0003fc00 [ok]
+[    803ms] INFO : loader::sample: SAMPLE ADA WPR_PLM 0x1fa7c4 = 0x0004cb8f [ok]
+[    811ms] INFO : loader::sample: SAMPLE ADA WPRCFG_PLM 0x1fa7cc = 0x0004cb8f [ok]
+[    818ms] INFO : loader::sample: SAMPLE ADA FBPA_PLM 0x9a0148 = 0xffffff0f [ok]
+[    826ms] INFO : loader::sample: SAMPLE TU10x FEAT_PLM 0x409650 = 0xbadf5040 [PRIV_VIOLATION]
+[    834ms] INFO : loader::sample: SAMPLE TU10x FEAT_SS0 0x409664 = 0xbadf5040 [PRIV_VIOLATION]
+[    842ms] INFO : loader::sample: SAMPLE TU10x FEAT_READOUT 0x409668 = 0xbadf5040 [PRIV_VIOLATION]
+[    851ms] INFO : loader::sample: SAMPLE XP3G PLM0 0x8e1b0 = 0xffffff8f [ok]
+[    856ms] INFO : loader::sample: SAMPLE XP3G PLMC 0x8e1bc = 0xffffffcf [ok]
+[    860ms] INFO : loader::sample: SAMPLE XP3G OVR0 0x8e110 = 0x00000000 [ok]
+[    899ms] INFO : loader::sample: SAMPLE XP3G VAL0 0x8e120 = 0x00000000 [ok]
+[    903ms] INFO : loader::sample: SAMPLE XVE LNKCAP 0x88084 = 0x00454d04 [ok]
+[    908ms] INFO : loader::sample: SAMPLE XVE LNKCTL 0x88088 = 0x11040140 [ok]
+[    912ms] INFO : loader::sample: SAMPLE XVE LNKCAP2 0x880a4 = 0x0180001e [ok]
+[    916ms] INFO : loader::sample: SAMPLE XVE LNKCTL2 0x880a8 = 0x001e0004 [ok]
+[    921ms] INFO : loader::sample: SAMPLE LNK MISC_1 0x8841c = 0x20360500 [ok]
+[    925ms] INFO : loader::sample: SAMPLE LNK VSEC_HIER 0x88610 = 0x00001001 [ok]
+[    932ms] INFO : loader::sample: SAMPLE LNK LTSSM_KICK 0x8872c = 0x00000000 [ok]
+[    939ms] INFO : loader::sample: SAMPLE LNK LINK_CONFIG_0 0x8c040 = 0x80005800 [ok]
+[    947ms] INFO : loader::sample: SAMPLE LNK PL_LINK_RATE 0x8c1c0 = 0x00040000 [ok]
+[    954ms] INFO : loader::sample: SAMPLE LNK CYA_DISG2 0x8c2c0 = 0x00000001 [ok]
+[    961ms] INFO : loader::sample: SAMPLE FEAT sweep 0x823800-0x82382f+0x823b00 (dword stride): 13 ok / 0 badf / 0 all-ones / 0 read-errors
+[    969ms] INFO : loader::sample: SAMPLE FEAT 0x823800 = 0xffffff8f [ok]
+[    973ms] INFO : loader::sample: SAMPLE FEAT 0x823804 = 0xffffff8f [ok]
+[    977ms] INFO : loader::sample: SAMPLE FEAT 0x823808 = 0x00100380 [ok]
+[    981ms] INFO : loader::sample: SAMPLE FEAT 0x82380c = 0x00888888 [ok]
+[    996ms] INFO : loader::sample: SAMPLE FEAT 0x823810 = 0x002aaaaa [ok]
+[    999ms] INFO : loader::sample: SAMPLE FEAT 0x823814 = 0x00000233 [ok]
+[   1003ms] INFO : loader::sample: SAMPLE FEAT 0x823818 = 0x00400080 [ok]
+[   1007ms] INFO : loader::sample: SAMPLE FEAT 0x82381c = 0x10300073 [ok]
+[   1011ms] INFO : loader::sample: SAMPLE FEAT 0x823820 = 0x00000007 [ok]
+[   1014ms] INFO : loader::sample: SAMPLE FEAT 0x823824 = 0x00000001 [ok]
+[   1018ms] INFO : loader::sample: SAMPLE FEAT 0x823828 = 0x00000000 [ok]
+[   1022ms] INFO : loader::sample: SAMPLE FEAT 0x82382c = 0x00000008 [ok]
+[   1025ms] INFO : loader::sample: SAMPLE FEAT 0x823b00 = 0x00004b8f [ok]
+[   1029ms] INFO : loader::sample: SAMPLE FEAT_READOUT_1 = 0x00400080 (0 = no compute throttle active)
+[   1035ms] INFO : loader::sample: SAMPLE PSTRAPS SET0 0x101000 = 0x00400080 [ok] / SET1 0x10100c = 0x02013000 [ok]
+[   1042ms] INFO : loader::sample: SAMPLE PSTRAPS decode: BAR1 index 0 = 64MiB  BAR0 index 0 (16MiB<<idx)  BAR3=2xBAR0  override_en=0 (0 = ROM straps win on reset)
+[   1063ms] INFO : loader::sample: SAMPLE NV_PROM first 0x10000 bytes: crc32 0x2a1e8c88, magic 0xeb7faa55
+[   1069ms] INFO : loader::sample: SAMPLE complete (read-only, nothing restored because nothing touched)
+[   1126ms] INFO : loader::tx_prep: PREP: select begin
+[   1135ms] INFO : loader::tx: TX-ASSET-DIAG: \tx-select-bdf.txt absent
+[   1198ms] INFO : loader::tx_prep: PREP: assets begin
+[   1211ms] INFO : loader::tx: TX-ASSET-DIAG: \booter_load_ga102.bin loaded 61256/61256 bytes
+[   1226ms] INFO : loader::tx: TX-ASSET-DIAG: \gsp_boot_desc_ga102.bin loaded 84/84 bytes
+[   1238ms] INFO : loader::tx: TX-ASSET-DIAG: \gsp_boot_ga102.bin loaded 24576/24576 bytes
+[   6318ms] INFO : loader::tx: TX-ASSET-DIAG: \fwimage_ga102.bin loaded 84226048/84226048 bytes
+[   6342ms] INFO : loader::tx: TX-ASSET-DIAG: \fwsignature_ga102.bin loaded 4096/4096 bytes
+[   6354ms] INFO : loader::tx: TX-ASSET-DIAG: \v67-direct-ss.bin absent
+[   6372ms] INFO : loader::tx: TX-ASSET-DIAG: \v67-ga102-four-plm.bin loaded 64000/64000 bytes
+[   6435ms] INFO : loader::tx_prep: CONFIRM: 5s armed countdown elapsed - PROCEED (marker file opted in)
+[   6448ms] INFO : loader::chainload: CHAIN-PRE: pre-transaction loader preload begin
+[   6479ms] INFO : loader::chainload: CHAIN-PRE: LoadImage '\EFI\Microsoft\Boot\bootmgfw.efi' (FromDevicePath)
+[   6553ms] INFO : loader::chainload: CHAIN-PRE: '\EFI\Microsoft\Boot\bootmgfw.efi' resident at 0x10000000 (0x33a000 bytes), PE header probe ok
+[   6573ms] INFO : loader::tx: TX-ROOT-DIR: System Volume Information size=4096
+[   6578ms] INFO : loader::tx: TX-ROOT-DIR: EFI size=4096
+[   6582ms] INFO : loader::tx: TX-ROOT-DIR: booter_load_ga102.bin size=61256
+[   6587ms] INFO : loader::tx: TX-ROOT-DIR: fwimage_ga102.bin size=84226048
+[   6602ms] INFO : loader::tx: TX-ROOT-DIR: fwsignature_ga102.bin size=4096
+[   6607ms] INFO : loader::tx: TX-ROOT-DIR: gsp_boot_desc_ga102.bin size=84
+[   6612ms] INFO : loader::tx: TX-ROOT-DIR: gsp_boot_ga102.bin size=24576
+[   6616ms] INFO : loader::tx: TX-ROOT-DIR: scrubber_ad10x.bin size=8264
+[   6621ms] INFO : loader::tx: TX-ROOT-DIR: v67-ga102-four-plm.bin size=64000
+[   6625ms] INFO : loader::tx: TX-ROOT-DIR: ssdiag-x86_64-windows.exe size=288768
+[   6632ms] INFO : loader::tx: TX-ROOT-DIR: i_know_what_i_am_doing.txt size=1
+[   6637ms] INFO : loader::tx: TX-ROOT-DIR: loader.log size=13309
+[   6645ms] INFO : loader: TX: ===== target 1/1: 10de:2482 @ 0000:01:00.0 =====
+[   6650ms] INFO : loader: TX: device 10de:2482 -> asset family 'ga102'
+[   6661ms] INFO : loader: TX: V67 present - unlock mode (family-specific write chain)
+[   6668ms] INFO : loader::tx: TX: BEGIN (phases: detach claim pre-flr scrub gfw layout fwsec booter verify selectors restore flr)
+[   6682ms] INFO : loader::tx: TX: >4GB staging gate: false (family ga102)
+[   6690ms] INFO : loader::tx_detach: PM: entry PMCSR=0x0008 state=D0 (cap@0x60)
+[   6697ms] INFO : loader::tx_detach: PM: D0 verified (PMCSR=0x0008)
+[   6701ms] INFO : loader::tx_detach: DETACH: staged console/driver detach begin (TOTORONG craft)
+[   6719ms] INFO : loader::tx_detach: DIAG PCIIO-OPENERS: Handle(0x409f4f98) agent=0x44707f98 controller=0x0 attr=0x1 count=43
+[   6727ms] INFO : loader::tx_detach: DIAG PCIIO-OPENERS: Handle(0x409f4f98) agent=0x4281a118 controller=0x409f4f98 attr=0x10 count=1
+[   6735ms] INFO : loader::tx_detach: DIAG PCIIO-OPENERS: Handle(0x409f4f98) agent=0x422f2d18 controller=0x409f4f98 attr=0x2 count=3
+[   6744ms] INFO : loader::tx_detach: DIAG PCIIO-OPENERS: Handle(0x409f4f98) agent=0x43cae718 controller=0x0 attr=0x2 count=1
+[   6753ms] INFO : loader::tx_detach: DIAG GOP-TOPOLOGY: Handle(0x40808b18) devpath_len=Some(36) on_target=true protocols=4
+[   6762ms] INFO : loader::tx_detach: DIAG GOP-OPENERS: Handle(0x40808b18) agent=0x44707f98 controller=0x0 attr=0x1 count=246
+[   6772ms] INFO : loader::tx_detach: DIAG GOP-OPENERS: Handle(0x40808b18) agent=0x42347f98 controller=0x40808b18 attr=0x10 count=1
+[   6782ms] INFO : loader::tx_detach: DIAG GOP-OPENERS: Handle(0x40808b18) agent=0x42347f98 controller=0x40805618 attr=0x8 count=1
+[   6792ms] INFO : loader::tx_detach: DIAG GOP-TOPOLOGY: Handle(0x40805618) devpath_len=None on_target=false protocols=5
+[   6802ms] INFO : loader::tx_detach: DIAG GOP-OPENERS: Handle(0x40805618) agent=0x42346e18 controller=0x40805618 attr=0x10 count=1
+[   6812ms] INFO : loader::tx_detach: DIAG GOP-OPENERS: Handle(0x40805618) agent=0x44707f98 controller=0x0 attr=0x1 count=260
+[   6828ms] INFO : loader::tx_detach: DETACH: stage GOP handle Handle(0x40808b18) protocols 4
+[   6850ms] INFO : loader::tx_detach: DETACH: GOP disconnect status Ok(()) protocols 4 -> 4
+[   6861ms] INFO : loader::tx_detach: DETACH: GOP handle Handle(0x40805618) is not on the target GPU (multi-GPU) - left untouched, its console stays alive
+[   6873ms] INFO : loader::tx_detach: DETACH: PCI disconnect status Ok(()) protocols 5 -> 4
+[   6883ms] INFO : loader::tx_detach: DIAG PCIIO-OPENERS: Handle(0x409f4f98) agent=0x44707f98 controller=0x0 attr=0x1 count=43
+[   6901ms] INFO : loader::tx_detach: DIAG PCIIO-OPENERS: Handle(0x409f4f98) agent=0x422f2d18 controller=0x409f4f98 attr=0x2 count=3
+[   6902ms] INFO : loader::tx_detach: DIAG PCIIO-OPENERS: Handle(0x409f4f98) agent=0x43cae718 controller=0x0 attr=0x2 count=1
+[   6902ms] INFO : loader::tx_detach: DIAG GOP-TOPOLOGY: Handle(0x40805618) devpath_len=None on_target=false protocols=5
+[   6903ms] INFO : loader::tx_detach: DIAG GOP-OPENERS: Handle(0x40805618) agent=0x42346e18 controller=0x40805618 attr=0x10 count=1
+[   6903ms] INFO : loader::tx_detach: DIAG GOP-OPENERS: Handle(0x40805618) agent=0x44707f98 controller=0x0 attr=0x1 count=280
+[   6904ms] INFO : loader::tx_detach: DETACH: PciIo EXCLUSIVE claimed
+[   6931ms] INFO : loader::tx_detach: DETACH: Attributes(Enable) no-op (cmd=0x0000) - raw COMMAND write
+[   6942ms] INFO : loader::tx_detach: DETACH: raw COMMAND write result cmd=0x0007
+[   6952ms] INFO : loader::tx_detach: DETACH: config baseline (vendor=0x10de dev=0x2482 cmd=0x0007 - MEM=true BME=true)
+[   6963ms] INFO : loader::tx: TX: detach+claim ok
+[   6969ms] INFO : loader::tx: PRE-FLR: disabled (no \pre-flr-on.txt) - kernel-matching flow
+[   6979ms] INFO : loader::tx: AUTH-SCAN begin (differential GSP vs SEC2)
+[   6980ms] INFO : loader::tx: AUTH-SCAN falcon +0x000 ENG           gsp=0x00000000[ok] sec2=0xbadf5620[BADF]
+[   6980ms] INFO : loader::tx: AUTH-SCAN falcon +0x040 MBOX0         gsp=0x00000000[ok] sec2=0x00000000[ok]
+[   6980ms] INFO : loader::tx: AUTH-SCAN falcon +0x044 MBOX1         gsp=0x00000000[ok] sec2=0x00000000[ok]
+[   6981ms] INFO : loader::tx: AUTH-SCAN falcon +0x0d0 EXCI          gsp=0x00900000[ok] sec2=0xbadf5620[BADF]
+[   6991ms] INFO : loader::tx: AUTH-SCAN falcon +0x0f4 HWCFG         gsp=0x000047f7[ok] sec2=0x000067f7[ok]
+[   6992ms] INFO : loader::tx: AUTH-SCAN falcon +0x100 CPUCTL        gsp=0x00000010[ok] sec2=0xbadf5620[BADF]
+[   6992ms] INFO : loader::tx: AUTH-SCAN falcon +0x104 BOOTVEC       gsp=0x00000000[ok] sec2=0xbadf5620[BADF]
+[   6992ms] INFO : loader::tx: AUTH-SCAN falcon +0x108 CAPS          gsp=0x80420100[ok] sec2=0x80420100[ok]
+[   6993ms] INFO : loader::tx: AUTH-SCAN falcon +0x10c DMACTL        gsp=0x00000080[ok] sec2=0xbadf5620[BADF]
+[   6993ms] INFO : loader::tx: AUTH-SCAN falcon +0x110 DMATRFBASE    gsp=0x00000000[ok] sec2=0xbadf5620[BADF]
+[   6993ms] INFO : loader::tx: AUTH-SCAN falcon +0x118 DMATRFCMD     gsp=0x00000002[ok] sec2=0xbadf5620[BADF]
+[   6994ms] INFO : loader::tx: AUTH-SCAN falcon +0x11c DMATRFFBOFFS  gsp=0x00000000[ok] sec2=0xbadf5620[BADF]
+[   6994ms] INFO : loader::tx: AUTH-SCAN falcon +0x120 DMATRFBASE1   gsp=0x00000010[ok] sec2=0xbadf5620[BADF]
+[   6995ms] INFO : loader::tx: AUTH-SCAN falcon +0x130 CPUCTL_ALIAS  gsp=0x00000000[ok] sec2=0xbadf5620[BADF]
+[   6995ms] INFO : loader::tx: AUTH-SCAN falcon +0x14c TRACEPC       gsp=0x00000000[ok] sec2=0xbadf5620[BADF]
+[   6995ms] INFO : loader::tx: AUTH-SCAN falcon +0x180 IMEMC         gsp=0x9100e200[ok] sec2=0xbadf5620[BADF]
+[   6996ms] INFO : loader::tx: AUTH-SCAN falcon +0x188 IMEMT         gsp=0x000000e1[ok] sec2=0xbadf5620[BADF]
+[   6996ms] INFO : loader::tx: AUTH-SCAN falcon +0x1c0 DMEMC         gsp=0x01000724[ok] sec2=0xbadf5620[BADF]
+[   6996ms] INFO : loader::tx: AUTH-SCAN falcon +0x300 UNK300        gsp=0xbadf5108[BADF] sec2=0xbadf5108[BADF]
+[   6997ms] INFO : loader::tx: AUTH-SCAN falcon +0x3c0 ENG_RESET     gsp=0x00000000[ok] sec2=0x00000000[ok]
+[   7008ms] INFO : loader::tx: AUTH-SCAN falcon +0x3c4 RESET_PLM?    gsp=0xfffffbff[BADF] sec2=0xffffffff[FFFF]
+[   7008ms] INFO : loader::tx: AUTH-SCAN falcon +0x440 UNK440        gsp=0x00000000[ok] sec2=0xbadf5620[BADF]
+[   7008ms] INFO : loader::tx: AUTH-SCAN falcon +0x4e4 UNK4E4        gsp=0x00000000[ok] sec2=0xbadf5620[BADF]
+[   7009ms] INFO : loader::tx: AUTH-SCAN falcon +0x4f4 UNK4F4        gsp=0x00000000[ok] sec2=0xbadf5620[BADF]
+[   7009ms] INFO : loader::tx: AUTH-SCAN falcon +0x520 UNK520        gsp=0x00000000[ok] sec2=0xbadf5620[BADF]
+[   7010ms] INFO : loader::tx: AUTH-SCAN falcon +0x524 UNK524        gsp=0x00000000[ok] sec2=0xbadf5620[BADF]
+[   7010ms] INFO : loader::tx: AUTH-SCAN falcon2 +0x180 MOD_SEL       gsp=0x00000001[ok] sec2=0xbadf5620[BADF]
+[   7010ms] INFO : loader::tx: AUTH-SCAN falcon2 +0x198 UCODE_ID      gsp=0x00000009[ok] sec2=0xbadf5620[BADF]
+[   7011ms] INFO : loader::tx: AUTH-SCAN falcon2 +0x19c ENGIDMASK     gsp=0x00000400[ok] sec2=0xbadf5620[BADF]
+[   7011ms] INFO : loader::tx: AUTH-SCAN falcon2 +0x210 PARAADDR      gsp=0x000005a4[ok] sec2=0xbadf5620[BADF]
+[   7011ms] INFO : loader::tx: AUTH-SCAN falcon2 +0x388 RISCV388      gsp=0x00000010[ok] sec2=0x00000010[ok]
+[   7012ms] INFO : loader::tx: AUTH-SCAN falcon2 +0x668 BCR           gsp=0x00000001[ok] sec2=0x00000110[ok]
+[   7012ms] INFO : loader::tx: AUTH-SCAN end
+[   7047ms] INFO : loader::tx_fwsec: SCRUB: BSI_SCRATCH15=0x201001bf handoff=1 (DONE=3)
+[   7053ms] INFO : loader::tx: TX-ASSET-DIAG: \scrubber_ad10x.bin loaded 8264/8264 bytes
+[   7057ms] INFO : loader::tx_fwsec: SCRUB: bundle ok - code 0x100+0x1900@va0x100 data 0x1a00+0x300 patch 0x1a00 ucode 0xd
+[   7068ms] INFO : loader::tx_fwsec: SCRUB: fuse_raw=0x00000001 version=1 sigs=2
+[   7068ms] INFO : loader::tx: Falcon reset begin: base=0x840000 switch_to_falcon=true
+[   7070ms] INFO : loader::tx: poll timeout tolerated: reg=0x8400f4 mask=0x80000000 expected=0x80000000 budget_us=1000
+[   7070ms] INFO : loader::tx: Falcon pre-reset timeout tolerated per HW bug 3419321
+[   7070ms] INFO : loader::tx: Falcon reset: BCR before = 0x00000110 (valid=0 core_select=1)
+[   7071ms] INFO : loader::tx: Falcon reset: BCR after switch = 0x00000001
+[   7071ms] INFO : loader::tx: Falcon reset done: base=0x840000 hwcfg=0x67f7 chip=0xb74000a1
+[   7071ms] INFO : loader::tx: FALCON-UNBLOCK: FBIF_CTL=0x00000190 TRANSCFG0=0x00000115 DMACTL=0x00000000 (want ctl bit7=1, trans&7=5, dmactl=0)
+[   7072ms] INFO : loader::tx_portal: PORTAL: IMEM loaded - 25 blocks, 6400 bytes, dest=0x0 va=0x100 secure=true
+[   7073ms] INFO : loader::tx_portal: PORTAL: DMEM loaded - 768 bytes at dest=0x0
+[   7073ms] INFO : loader::tx_fwsec: SCRUB start: cpuctl=0x10
+[   7074ms] INFO : loader::tx_fwsec: SCRUB forensic: CPUCTL=0x00000010 MAILBOX0=0x00000000 EXCI=0x00900100 TRACEPC=0x00000000 IMEMC0=0x81001900 DMACTL=0x00000080
+[   7074ms] INFO : loader::tx_fwsec: SCRUB forensic: SEC2 DMEM@0x0 nonzero words = 32/32; first 8:
+[   7074ms] INFO : loader::tx_fwsec:   DMEM[0] = 0xdead5ec2
+[   7075ms] INFO : loader::tx_fwsec:   DMEM[1] = 0xdead5ec2
+[   7075ms] INFO : loader::tx_fwsec:   DMEM[2] = 0xdead5ec2
+[   7085ms] INFO : loader::tx_fwsec:   DMEM[3] = 0xdead5ec2
+[   7086ms] INFO : loader::tx_fwsec:   DMEM[4] = 0xdead5ec2
+[   7086ms] INFO : loader::tx_fwsec:   DMEM[5] = 0xdead5ec2
+[   7086ms] INFO : loader::tx_fwsec:   DMEM[6] = 0xdead5ec2
+[   7086ms] INFO : loader::tx_fwsec:   DMEM[7] = 0xdead5ec2
+[   7086ms] INFO : loader::tx_fwsec: SCRUB forensic: SEC2 DMEM top window @0x2c0: nonzero 16/16
+[   7087ms] INFO : loader::tx_fwsec:   TOP[0] = 0xdead5ec2
+[   7087ms] INFO : loader::tx_fwsec:   TOP[1] = 0xdead5ec2
+[   7087ms] INFO : loader::tx_fwsec:   TOP[2] = 0xdead5ec2
+[   7087ms] INFO : loader::tx_fwsec:   TOP[3] = 0xdead5ec2
+[   7088ms] INFO : loader::tx_fwsec:   TOP[4] = 0xdead5ec2
+[   7088ms] INFO : loader::tx_fwsec:   TOP[5] = 0xdead5ec2
+[   7088ms] INFO : loader::tx_fwsec:   TOP[6] = 0xdead5ec2
+[   7088ms] INFO : loader::tx_fwsec:   TOP[7] = 0xdead5ec2
+[   7088ms] INFO : loader::tx_fwsec:   TOP[8] = 0xdead5ec2
+[   7089ms] INFO : loader::tx_fwsec:   TOP[9] = 0xdead5ec2
+[   7099ms] INFO : loader::tx_fwsec:   TOP[10] = 0xdead5ec2
+[   7099ms] INFO : loader::tx_fwsec:   TOP[11] = 0xdead5ec2
+[   7099ms] INFO : loader::tx_fwsec:   TOP[12] = 0xdead5ec2
+[   7100ms] INFO : loader::tx_fwsec:   TOP[13] = 0xdead5ec2
+[   7100ms] INFO : loader::tx_fwsec:   TOP[14] = 0xdead5ec2
+[   7100ms] INFO : loader::tx_fwsec:   TOP[15] = 0xdead5ec2
+[  12100ms] INFO : loader::tx_fwsec: SCRUB: SEC2 fired but handoff stuck at 1
+[  12101ms] INFO : loader::tx: TX: scrubber did not complete (ETimeout { tolerated: false }) - proceeding without it (community chain shape)
+[  12101ms] INFO : loader::tx_fwsec: layout inputs: fb_mib=0x00002000 vga=0x00000001 mmu_plm=0x0045cb8f mmu_lo=0x00100000 mmu_hi=0x01effff0 image=0x5053000 boot=0x6000
+[  12102ms] INFO : loader::tx_fwsec: layout mmu: lock ignored (high address is not the FB top)
+[  12102ms] INFO : loader::tx_fwsec: layout: fb=0x200000000 vga=0x1fff00000 frts=0x1ffe00000 wpr=[0x1f5400000,0x1fff00000]
+[  12103ms] INFO : loader::tx: TX: layout ok (frts=0x1ffe00000)
+[  12103ms] INFO : loader::tx_fwsec: FWSEC: reading PROM at 0x300000
+[  12307ms] INFO : loader::tx_fwsec: FWSEC: PROM bytes=1048576 signature=0xaa55
+[  12318ms] INFO : loader::tx_fwsec: FWSEC: imem=0x0/0xe200 dmem=0x0/0x800 pkc=0x5a4 sigs=0x7 ucode=9
+[  12328ms] INFO : loader::tx_fwsec: FWSEC: stored=0xea00 dma_image=0xea00 (256-rounded, tail zeroed) data_off=0xe200
+[  12339ms] INFO : loader::tx_fwsec: FWSEC-TRACE: alloc 59904 bytes for FWSEC image
+[  12339ms] INFO : loader::pci: MEMMAP: 0x100000000-0x140000000 (1024 MiB) type=CONVENTIONAL attr=MemoryAttribute(UNCACHEABLE | WRITE_COMBINE | WRITE_THROUGH | WRITE_BACK)
+[  12340ms] INFO : loader::pci: MEMMAP: 0x140000000-0x140056000 (0 MiB) type=LOADER_CODE attr=MemoryAttribute(UNCACHEABLE | WRITE_COMBINE | WRITE_THROUGH | WRITE_BACK)
+[  12340ms] INFO : loader::pci: MEMMAP: 0x140056000-0x8b0000000 (30463 MiB) type=CONVENTIONAL attr=MemoryAttribute(UNCACHEABLE | WRITE_COMBINE | WRITE_THROUGH | WRITE_BACK)
+[  12341ms] INFO : loader::pci: MEMMAP: 0xc0000000-0xd0000000 (256 MiB) type=MMIO attr=MemoryAttribute(UNCACHEABLE | RUNTIME)
+[  12341ms] INFO : loader::pci: MEMMAP: 0xfe000000-0xfe011000 (0 MiB) type=MMIO attr=MemoryAttribute(UNCACHEABLE | RUNTIME)
+[  12342ms] INFO : loader::pci: MEMMAP: 0xfec00000-0xfec01000 (0 MiB) type=MMIO attr=MemoryAttribute(UNCACHEABLE | RUNTIME)
+[  12342ms] INFO : loader::pci: MEMMAP: 0xfed00000-0xfed01000 (0 MiB) type=MMIO attr=MemoryAttribute(UNCACHEABLE | RUNTIME)
+[  12343ms] INFO : loader::pci: MEMMAP: 0xfed20000-0xfed80000 (0 MiB) type=RESERVED attr=MemoryAttribute(0x0)
+[  12343ms] INFO : loader::pci: MEMMAP: 0xfee00000-0xfee01000 (0 MiB) type=MMIO attr=MemoryAttribute(UNCACHEABLE | RUNTIME)
+[  12344ms] INFO : loader::pci: MEMMAP: 0xff000000-0x100000000 (16 MiB) type=MMIO attr=MemoryAttribute(UNCACHEABLE | WRITE_THROUGH | WRITE_BACK | WRITE_PROTECT | RUNTIME)
+[  12344ms] INFO : loader::pci: MEMMAP: 2 conventional descriptors above 4GB
+[  12344ms] INFO : loader::pci: DMA alloc: family not gated for >4GB staging - legacy PciIo path
+[  12345ms] INFO : loader::pci: DMA alloc: 15 pages memtype=EfiBootServicesData dev=0x4083c000 [LOW] (PciIo)
+[  12345ms] INFO : loader::tx_fwsec: FWSEC mapper patched: frts=0x1ffe00000 cmd@0x7c0
+[  12346ms] INFO : loader::tx_fwsec: FWSEC fuse: raw=0x3 version=2
+[  12356ms] INFO : loader::tx: Falcon reset begin: base=0x110000 switch_to_falcon=true
+[  12358ms] INFO : loader::tx: poll timeout tolerated: reg=0x1100f4 mask=0x80000000 expected=0x80000000 budget_us=1000
+[  12358ms] INFO : loader::tx: Falcon pre-reset timeout tolerated per HW bug 3419321
+[  12358ms] INFO : loader::tx: Falcon reset: BCR before = 0x00000110 (valid=0 core_select=1)
+[  12359ms] INFO : loader::tx: Falcon reset: BCR after switch = 0x00000001
+[  12359ms] INFO : loader::tx: Falcon reset done: base=0x110000 hwcfg=0x67f7 chip=0xb74000a1
+[  12359ms] INFO : loader::tx: FALCON-UNBLOCK: FBIF_CTL=0x00000190 TRANSCFG0=0x00000115 DMACTL=0x00000000 (want ctl bit7=1, trans&7=5, dmactl=0)
+[  12360ms] INFO : loader::tx: AUTH-POST GSP +0x100 CPUCTL        = 0x00000010
+[  12360ms] INFO : loader::tx: AUTH-POST GSP +0x130 CPUCTL_ALIAS  = 0x00000000
+[  12360ms] INFO : loader::tx: AUTH-POST GSP +0x10c DMACTL        = 0x00000000
+[  12361ms] INFO : loader::tx: AUTH-POST GSP +0x104 BOOTVEC       = 0x00000000
+[  12361ms] INFO : loader::tx: AUTH-POST GSP +0x0d0 EXCI          = 0x00000000
+[  12361ms] INFO : loader::tx: AUTH-POST GSP +0x0f4 HWCFG         = 0x000047f7
+[  12361ms] INFO : loader::tx: AUTH-POST GSP +0x3c0 ENG_RESET     = 0x00000000
+[  12362ms] INFO : loader::tx: AUTH-POST GSP +0x3c4 RESET_PLM?    = 0xfffffbff[BADF]
+[  12362ms] INFO : loader::tx: AUTH-POST GSP: CPUCTL write-probe 0x00000010 -> 0x00000050 (bit6 STUCK - writes work)
+[  12381ms] INFO : loader::tx_fwsec: FWSEC portal: IMEM 226 blocks (57856 bytes, secure)
+[  12382ms] INFO : loader::tx_portal: PORTAL: DMEM loaded - 2048 bytes at dest=0x0
+[  12597ms] INFO : loader::tx_fwsec: FWSEC portal forensic: CPUCTL=0x00000010 MAILBOX0=0x00000000 EXCI=0x00900000
+[  12598ms] INFO : loader::tx_fwsec: FWSEC result: scratch=0x0 expected_hi16=0
+[  12598ms] INFO : loader::tx_fwsec: FWSEC WPR2: low=0x1ffe000 high=0x1ffee00 expected_page=0x1ffe00 end=0x1fff00000
+[  12599ms] INFO : loader::tx_fwsec: FWSEC: WPR2 verified
+[  12627ms] INFO : loader::tx: TX: fwsec ok (WPR2 verified)
+[  12627ms] INFO : loader::tx: TX: booter bundle ok (image 60416 sigs 768)
+[  12627ms] INFO : loader::pci: DMA alloc: family not gated for >4GB staging - legacy PciIo path
+[  12628ms] INFO : loader::pci: DMA alloc: 15 pages memtype=EfiBootServicesData dev=0x4083c000 [LOW] (PciIo)
+[  12628ms] INFO : loader::pci: DMA alloc: family not gated for >4GB staging - legacy PciIo path
+[  12628ms] INFO : loader::pci: DMA alloc: 16 pages memtype=EfiBootServicesData dev=0x4082c000 [LOW] (PciIo)
+[  12629ms] INFO : loader::pci: DMA alloc: family not gated for >4GB staging - legacy PciIo path
+[  12629ms] INFO : loader::pci: DMA alloc: 1 pages memtype=EfiBootServicesData dev=0x42310000 [LOW] (PciIo)
+[  12630ms] INFO : loader::pci: DMA alloc: family not gated for >4GB staging - legacy PciIo path
+[  12630ms] INFO : loader::pci: DMA alloc: 1 pages memtype=EfiBootServicesData dev=0x42308000 [LOW] (PciIo)
+[  12641ms] INFO : loader::pci: DMA alloc: family not gated for >4GB staging - legacy PciIo path
+[  12641ms] INFO : loader::pci: DMA alloc: 6 pages memtype=EfiBootServicesData dev=0x40826000 [LOW] (PciIo)
+[  12642ms] INFO : loader::tx: TX: booter sig fuse_ver=1 (payload_mode=true)
+[  12642ms] INFO : loader::pci: DMA alloc: family not gated for >4GB staging - legacy PciIo path
+[  12642ms] INFO : loader::pci: DMA alloc: 20606 pages memtype=EfiBootServicesData dev=0x243e3000 [LOW] (PciIo)
+[  12654ms] INFO : loader::tx_booter: radix: leaves=20563 tables=43 level0=0x243e3000
+[  12655ms] INFO : loader::tx: TX: WprMeta published (payload_mode=true)
+[  12655ms] INFO : loader::pci: DMA-PATH[before-bridge-bme]: gpu loc=Some((0, 1, 0, 0)) command=0x0007 status=0x0010 devctl=0x2930 (cap 0x78)
+[  12656ms] INFO : loader::pci: DMA-PATH[before-bridge-bme]: bridge 8086:a70d loc=Some((0, 0, 1, 0)) command=0x0003 status=0x0010 pri/sec/sub=0/1/1 bridgectl=0x0010
+[  12656ms] INFO : loader::pci: DMA-PATH[before-bridge-bme]: bridge 8086:a74d loc=Some((0, 0, 6, 0)) command=0x0007 status=0x0010 pri/sec/sub=0/2/2 bridgectl=0x0010
+[  12657ms] INFO : loader::pci: DMA-PATH[before-bridge-bme]: bridge 8086:7ac8 loc=Some((0, 0, 26, 0)) command=0x0007 status=0x0010 pri/sec/sub=0/3/3 bridgectl=0x0010
+[  12657ms] INFO : loader::pci: DMA-PATH[before-bridge-bme]: bridge 8086:7aba loc=Some((0, 0, 28, 0)) command=0x0007 status=0x0010 pri/sec/sub=0/4/4 bridgectl=0x0010
+[  12658ms] INFO : loader::pci: DMA-PATH[before-bridge-bme]: bridge 8086:7abb loc=Some((0, 0, 28, 3)) command=0x0007 status=0x0010 pri/sec/sub=0/5/5 bridgectl=0x0010
+[  12659ms] INFO : loader::pci: DMA-PATH[before-bridge-bme]: bridge 8086:7ab0 loc=Some((0, 0, 29, 0)) command=0x0007 status=0x0010 pri/sec/sub=0/6/6 bridgectl=0x0010
+[  12665ms] INFO : loader::pci: BRIDGE-BME: Some((0, 0, 1, 0)) command 0x0003 -> 0x0007
+[  12665ms] INFO : loader::pci: DMA-PATH[after-bridge-bme]: gpu loc=Some((0, 1, 0, 0)) command=0x0007 status=0x0010 devctl=0x2930 (cap 0x78)
+[  12676ms] INFO : loader::pci: DMA-PATH[after-bridge-bme]: bridge 8086:a70d loc=Some((0, 0, 1, 0)) command=0x0007 status=0x0010 pri/sec/sub=0/1/1 bridgectl=0x0010
+[  12677ms] INFO : loader::pci: DMA-PATH[after-bridge-bme]: bridge 8086:a74d loc=Some((0, 0, 6, 0)) command=0x0007 status=0x0010 pri/sec/sub=0/2/2 bridgectl=0x0010
+[  12678ms] INFO : loader::pci: DMA-PATH[after-bridge-bme]: bridge 8086:7ac8 loc=Some((0, 0, 26, 0)) command=0x0007 status=0x0010 pri/sec/sub=0/3/3 bridgectl=0x0010
+[  12678ms] INFO : loader::pci: DMA-PATH[after-bridge-bme]: bridge 8086:7aba loc=Some((0, 0, 28, 0)) command=0x0007 status=0x0010 pri/sec/sub=0/4/4 bridgectl=0x0010
+[  12679ms] INFO : loader::pci: DMA-PATH[after-bridge-bme]: bridge 8086:7abb loc=Some((0, 0, 28, 3)) command=0x0007 status=0x0010 pri/sec/sub=0/5/5 bridgectl=0x0010
+[  12679ms] INFO : loader::pci: DMA-PATH[after-bridge-bme]: bridge 8086:7ab0 loc=Some((0, 0, 29, 0)) command=0x0007 status=0x0010 pri/sec/sub=0/6/6 bridgectl=0x0010
+[  12702ms] INFO : loader::tx: Falcon reset begin: base=0x840000 switch_to_falcon=true
+[  12704ms] INFO : loader::tx: poll timeout tolerated: reg=0x8400f4 mask=0x80000000 expected=0x80000000 budget_us=1000
+[  12704ms] INFO : loader::tx: Falcon pre-reset timeout tolerated per HW bug 3419321
+[  12705ms] INFO : loader::tx: Falcon reset: BCR before = 0x00000110 (valid=0 core_select=1)
+[  12705ms] INFO : loader::tx: Falcon reset: BCR after switch = 0x00000001
+[  12705ms] INFO : loader::tx: Falcon reset done: base=0x840000 hwcfg=0x67f7 chip=0xb74000a1
+[  12706ms] INFO : loader::tx: FALCON-UNBLOCK: FBIF_CTL=0x00000190 TRANSCFG0=0x00000115 DMACTL=0x00000000 (want ctl bit7=1, trans&7=5, dmactl=0)
+[  12706ms] INFO : loader::tx: AUTH-POST SEC2 +0x100 CPUCTL        = 0x00000010
+[  12707ms] INFO : loader::tx: AUTH-POST SEC2 +0x130 CPUCTL_ALIAS  = 0x00000000
+[  12707ms] INFO : loader::tx: AUTH-POST SEC2 +0x10c DMACTL        = 0x00000000
+[  12717ms] INFO : loader::tx: AUTH-POST SEC2 +0x104 BOOTVEC       = 0x00000000
+[  12718ms] INFO : loader::tx: AUTH-POST SEC2 +0x0d0 EXCI          = 0x00000000
+[  12718ms] INFO : loader::tx: AUTH-POST SEC2 +0x0f4 HWCFG         = 0x000047f7
+[  12718ms] INFO : loader::tx: AUTH-POST SEC2 +0x3c0 ENG_RESET     = 0x00000000
+[  12718ms] INFO : loader::tx: AUTH-POST SEC2 +0x3c4 RESET_PLM?    = 0xffffffff[BADF]
+[  12719ms] INFO : loader::tx: AUTH-POST SEC2: CPUCTL write-probe 0x00000010 -> 0x00000050 (bit6 STUCK - writes work)
+[  12720ms] INFO : loader::tx_portal: PORTAL: IMEM loaded - 137 blocks, 35072 bytes, dest=0x0 va=0x100 secure=true
+[  12721ms] INFO : loader::tx_portal: PORTAL: DMEM loaded - 25088 bytes at dest=0x0
+[  12722ms] INFO : loader::tx_booter: BOOTER brom readback: PARAADDR=0x10 ENGIDMASK=0x1 UCODE_ID=0x3 MOD_SEL=0x1 (want 0x10/0x1/0x3/1)
+[  12722ms] INFO : loader::tx_booter: BOOTER exci probe: pre=0x00000000 post-clear=0x00000000; ENG=0x00000000 (cpuctl=0x00000050)
+[  12723ms] INFO : loader::tx_booter: BOOTER fire: sec-imem 0x100+0x8900@dest0 dmem 0x8a00+0x6200 sig@0x10 meta=0x42310000 cpuctl=0x50
+[  12728ms] INFO : loader::tx_booter: BOOTER start-probe: pre=0x00000050 imm=0x00000040 +5ms=0x00000000
+[  12729ms] INFO : loader::tx_booter: BOOTER wait_plm: first-read FEAT_PLM=0xffffff8f (claim guard vouched closed at entry; open here = payload out-ran the verdict read)
+[  12882ms] INFO : loader::tx_booter: BOOTER wait_plm: PLM flip 0xffffff8f -> 0xffffffff after ~147150us - payload executed (booter stays in the fill self-loop; no halt will follow)
+[  12883ms] INFO : loader::tx_booter: BOOTER forensic: CPUCTL=0x00000000 MAILBOX0=0x42310000 EXCI=0x00a0000e TRANSCFG=0x00000114
+[  12884ms] INFO : loader::tx: TX: booter fired
+[  12894ms] INFO : loader::tx_booter: POST-BOOT: FEAT_PLM=0xffffffff SS0=0x10300073 SS1=0x7
+[  12905ms] INFO : loader::tx_booter: POST-BOOT: FACTORY FEAT_READOUT_1=0x00400080 (0 = full speed; badf5040 = PLM still closed)
+[  12923ms] INFO : loader::tx_booter: POST-BOOT: SEC2 MAILBOX0=0x42310000 WPR2_HI=0x1ffee00
+[  12934ms] INFO : loader::tx_booter: POST-BOOT: WPRCFG=0x4cb8f FBPA=0xffffff0f WPR=0x4cb8f
+[  12944ms] INFO : loader::tx: TX: execution verified
+[  12944ms] INFO : loader::tx_booter: selector read: SS0=0x10300073 expected_unlock=0x88888888
+[  12945ms] INFO : loader::tx_booter: selector write: SS0=0x88888888
+[  12945ms] INFO : loader::tx_booter: selector read: SS1=0x7 expected_unlock=0x8
+[  12945ms] INFO : loader::tx_booter: selector write: SS1=0x8
+[  12946ms] INFO : loader::tx: SELECTOR RESULT: SS0=0x88888888 SS1=0x8
+[  12956ms] INFO : loader::tx: TX: stock signature restored
+[  12956ms] INFO : loader::tx_booter: pre-FLR selectors: ss0=0x88888888 ss1=0x8 (0 = locked, expected in replay)
+[  12967ms] INFO : loader::tx_booter: PCIe FLR triggered
+[  13094ms] INFO : loader::tx_booter: FLR: pci state restored (cmd=0x0003)
+[  13460ms] INFO : loader::tx_booter: POST-FLR: GFW halted the cores
+[  13470ms] INFO : loader::tx_booter: POST-FLR: WPR2=0x1ffffe00/0x0
+[  13481ms] INFO : loader::tx_booter: POST-FLR selectors: ss0=0x88888888 ss1=0x8 (0 = locked, expected in replay)
+[  13501ms] INFO : loader::tx: PM: post-FLR PMCSR=0x0008 state=D0 (entry 0x0008)
+[  13519ms] INFO : loader::tx: POST-FLR: verified (selectors survive AON)
+[  13530ms] INFO : loader::pci: HANDOFF-PCI gpu cfg00-1f: 248210de 00100003 030000a1 00800010 50000000 0000000c 00000040 0000000c
+[  13541ms] INFO : loader::pci: HANDOFF-PCI gpu cfg20-3f: 00000042 00005001 00000000 146a10de 00000000 00000060 00000000 00000100
+[  13552ms] INFO : loader::pci: HANDOFF-PCI cap id=0x01@0x60
+[  13562ms] INFO : loader::pci: HANDOFF-PCI cap MSI@0x68: mc=0x0080
+[  13573ms] INFO : loader::pci: HANDOFF-PCI cap PCIe@0x78: devcap=0x8de1 devctl=0x2930 devsta=0x0000 lnkcap=0x454d04 lnkctl=0x0140 lnksta=0x1104
+[  13584ms] INFO : loader::pci: HANDOFF-PCI cap id=0x09@0xb4
+[  13595ms] INFO : loader::pci: HANDOFF-PCI bridge Some((0, 0, 1, 0)) cmd=0x0007 bridgectl=0x0010
+[  13605ms] INFO : loader::pci: HANDOFF-PCI bridge Some((0, 0, 6, 0)) cmd=0x0007 bridgectl=0x0010
+[  13616ms] INFO : loader::pci: HANDOFF-PCI bridge Some((0, 0, 26, 0)) cmd=0x0007 bridgectl=0x0010
+[  13627ms] INFO : loader::pci: HANDOFF-PCI bridge Some((0, 0, 28, 0)) cmd=0x0007 bridgectl=0x0010
+[  13644ms] INFO : loader::pci: HANDOFF-PCI bridge Some((0, 0, 28, 3)) cmd=0x0007 bridgectl=0x0010
+[  13655ms] INFO : loader::pci: HANDOFF-PCI bridge Some((0, 0, 29, 0)) cmd=0x0007 bridgectl=0x0010
+[  13865ms] INFO : loader::tx: TX-ASSET-DIAG: \tx-reconnect-nonrecursive.txt absent
+[  13876ms] INFO : loader::tx_detach: RECONNECT: pathless GOP survived the detach - vendor GOP only (non-recursive)
+[  13886ms] INFO : loader::tx_detach: RECONNECT: ConnectController (recursive=false) begin
+[  13985ms] INFO : loader::tx_detach: RECONNECT: ConnectController ok (recursive=false)
+[  13995ms] INFO : loader::tx_detach: DIAG PCIIO-OPENERS: Handle(0x409f4f98) agent=0x44707f98 controller=0x0 attr=0x1 count=43
+[  13996ms] INFO : loader::tx_detach: DIAG PCIIO-OPENERS: Handle(0x409f4f98) agent=0x422f2d18 controller=0x409f4f98 attr=0x2 count=4
+[  13996ms] INFO : loader::tx_detach: DIAG PCIIO-OPENERS: Handle(0x409f4f98) agent=0x4281a118 controller=0x409f4f98 attr=0x10 count=1
+[  13997ms] INFO : loader::tx_detach: DIAG GOP-TOPOLOGY: Handle(0x40805618) devpath_len=None on_target=false protocols=5
+[  13997ms] INFO : loader::tx_detach: DIAG GOP-OPENERS: Handle(0x40805618) agent=0x42346e18 controller=0x40805618 attr=0x10 count=1
+[  13997ms] INFO : loader::tx_detach: DIAG GOP-OPENERS: Handle(0x40805618) agent=0x44707f98 controller=0x0 attr=0x1 count=682
+[  13998ms] INFO : loader::tx_detach: DIAG GOP-TOPOLOGY: Handle(0x42321b18) devpath_len=Some(36) on_target=true protocols=4
+[  13998ms] INFO : loader::tx_detach: DIAG GOP-OPENERS: Handle(0x42321b18) agent=0x44707f98 controller=0x0 attr=0x1 count=16
+[  13999ms] INFO : loader::tx: FINAL: transaction complete, all DMA released
+[  14009ms] INFO : loader::pci: BRIDGE-BME: restored Some((0, 0, 1, 0)) command 0x0007 -> 0x0003
+[  14010ms] INFO : loader: SELECTOR RESULT: transaction complete
+[  14020ms] INFO : loader::tx: HANDOFF-OUT: ss0=0x88888888 ss1=0x8 readout1=0x00000000 feat_plm=0xffffffff wpr2_hi=0x0 pmcsr=0x0008 dstate=D0 | tu10x: plm=0xbadf5040 ss0=0xbadf5040 ss1=0xbadf5040 readout=0xbadf5040 | tu10x_unlock=false ss0_unlock=true ss1_unlock=true plm_open=true
+[  14031ms] INFO : loader: TX: multi-GPU pass complete (1 target(s) processed)
+[  14049ms] INFO : loader::chainload: PHASE: CHAIN
+[  14059ms] INFO : loader::chainload: CHAIN-PRE: start-time PE header probe ok - StartImage the preloaded '\EFI\Microsoft\Boot\bootmgfw.efi'

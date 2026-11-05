@@ -1,0 +1,2174 @@
+{
+  "schema_version": 1,
+  "updated": "2026-11-05",
+  "note": "GPUUnlockInspector 型号库。可自由编辑增补；字段缺失或为 null 时界面显示 Unknown。",
+  "algorithms": {
+    "ethash": {
+      "key": "ethash",
+      "label_key": "algo.ethash",
+      "unit": "MH/s",
+      "ref_only": true,
+      "note": "Ethash 参考值为公开软件实测中位数，用于对比表；本项目内置基准测试测的是 proxy_v1，不是 Ethash。"
+    },
+    "proxy_v1": {
+      "key": "proxy_v1",
+      "label_key": "algo.proxy_v1",
+      "unit": "MSol/s",
+      "note": "GPUUnlockInspector 内存硬代理算法 v1：反复对 512MB scratchpad 做随机寻址 + 整数混洗混洗，负载特征接近 LHR 限制的目标负载，用于前后对比。"
+    }
+  },
+  "lhr_types": {
+    "none": {
+      "label_key": "lhr.none",
+      "desc_key": "lhr.none.desc"
+    },
+    "lhr_v1": {
+      "label_key": "lhr.v1",
+      "desc_key": "lhr.v1.desc"
+    },
+    "lhr_v2": {
+      "label_key": "lhr.v2",
+      "desc_key": "lhr.v2.desc"
+    },
+    "unknown": {
+      "label_key": "lhr.unknown",
+      "desc_key": "lhr.unknown.desc"
+    }
+  },
+  "gpus": [
+    {
+      "id": "rtx3050_8g",
+      "name": "RTX 3050",
+      "match": {
+        "names": [
+          "RTX 3050"
+        ],
+        "mem_gb_hint": null
+      },
+      "arch": "Ampere",
+      "codename": "GA106",
+      "cuda_cores": 2560,
+      "sm_count": 20,
+      "process_nm": 8,
+      "tdp_w": 130,
+      "mem": {
+        "size_gb": 8,
+        "type": "GDDR6",
+        "bus": 128,
+        "bandwidth": 224
+      },
+      "clocks": {
+        "base": 1552,
+        "boost": 1777,
+        "mem_mhz": 1750
+      },
+      "pcie": {
+        "gen": 4,
+        "width": 16
+      },
+      "lhr": {
+        "type": "lhr_v2",
+        "since_driver": "471.11"
+      },
+      "hashrate": {
+        "ethash": {
+          "locked": 15,
+          "unlocked": 27
+        }
+      }
+    },
+    {
+      "id": "rtx3060_12g",
+      "name": "RTX 3060",
+      "match": {
+        "names": [
+          "RTX 3060"
+        ],
+        "mem_gb_hint": null
+      },
+      "arch": "Ampere",
+      "codename": "GA106",
+      "cuda_cores": 3584,
+      "sm_count": 28,
+      "process_nm": 8,
+      "tdp_w": 170,
+      "mem": {
+        "size_gb": 12,
+        "type": "GDDR6",
+        "bus": 192,
+        "bandwidth": 360
+      },
+      "clocks": {
+        "base": 1320,
+        "boost": 1777,
+        "mem_mhz": 1875
+      },
+      "pcie": {
+        "gen": 4,
+        "width": 16
+      },
+      "lhr": {
+        "type": "lhr_v1",
+        "since_driver": "461.09",
+        "note": "v1 曾在 470.05 早期驱动被绕过，后续 v2 重新上锁"
+      },
+      "hashrate": {
+        "ethash": {
+          "locked": 25,
+          "unlocked": 49
+        }
+      }
+    },
+    {
+      "id": "rtx3060_8g",
+      "name": "RTX 3060",
+      "match": {
+        "names": [
+          "RTX 3060"
+        ],
+        "mem_gb_hint": 8
+      },
+      "arch": "Ampere",
+      "codename": "GA106",
+      "cuda_cores": 3584,
+      "sm_count": 28,
+      "process_nm": 8,
+      "tdp_w": 170,
+      "mem": {
+        "size_gb": 8,
+        "type": "GDDR6",
+        "bus": 128,
+        "bandwidth": 240
+      },
+      "clocks": {
+        "base": 1320,
+        "boost": 1777,
+        "mem_mhz": 1875
+      },
+      "pcie": {
+        "gen": 4,
+        "width": 16
+      },
+      "lhr": {
+        "type": "lhr_v2",
+        "since_driver": "471.11"
+      },
+      "hashrate": {
+        "ethash": {
+          "locked": 24,
+          "unlocked": 47
+        }
+      }
+    },
+    {
+      "id": "rtx3060ti",
+      "name": "RTX 3060 Ti",
+      "match": {
+        "names": [
+          "RTX 3060 Ti"
+        ],
+        "mem_gb_hint": null
+      },
+      "arch": "Ampere",
+      "codename": "GA104",
+      "cuda_cores": 4864,
+      "sm_count": 38,
+      "process_nm": 8,
+      "tdp_w": 200,
+      "mem": {
+        "size_gb": 8,
+        "type": "GDDR6",
+        "bus": 256,
+        "bandwidth": 448
+      },
+      "clocks": {
+        "base": 1410,
+        "boost": 1665,
+        "mem_mhz": 1750
+      },
+      "pcie": {
+        "gen": 4,
+        "width": 16
+      },
+      "lhr": {
+        "type": "lhr_v2"
+      },
+      "hashrate": {
+        "ethash": {
+          "locked": 43,
+          "unlocked": 61
+        }
+      }
+    },
+    {
+      "id": "rtx3070",
+      "name": "RTX 3070",
+      "match": {
+        "names": [
+          "RTX 3070"
+        ],
+        "mem_gb_hint": null
+      },
+      "arch": "Ampere",
+      "codename": "GA104",
+      "cuda_cores": 5888,
+      "sm_count": 46,
+      "process_nm": 8,
+      "tdp_w": 220,
+      "mem": {
+        "size_gb": 8,
+        "type": "GDDR6",
+        "bus": 256,
+        "bandwidth": 448
+      },
+      "clocks": {
+        "base": 1500,
+        "boost": 1725,
+        "mem_mhz": 1750
+      },
+      "pcie": {
+        "gen": 4,
+        "width": 16
+      },
+      "lhr": {
+        "type": "lhr_v2"
+      },
+      "hashrate": {
+        "ethash": {
+          "locked": 43,
+          "unlocked": 57
+        }
+      }
+    },
+    {
+      "id": "rtx3070ti",
+      "name": "RTX 3070 Ti",
+      "match": {
+        "names": [
+          "RTX 3070 Ti"
+        ],
+        "mem_gb_hint": null
+      },
+      "arch": "Ampere",
+      "codename": "GA104",
+      "cuda_cores": 6144,
+      "sm_count": 48,
+      "process_nm": 8,
+      "tdp_w": 290,
+      "mem": {
+        "size_gb": 8,
+        "type": "GDDR6X",
+        "bus": 256,
+        "bandwidth": 608
+      },
+      "clocks": {
+        "base": 1575,
+        "boost": 1770,
+        "mem_mhz": 1188
+      },
+      "pcie": {
+        "gen": 4,
+        "width": 16
+      },
+      "lhr": {
+        "type": "lhr_v2"
+      },
+      "hashrate": {
+        "ethash": {
+          "locked": 46,
+          "unlocked": 69
+        }
+      }
+    },
+    {
+      "id": "rtx3080_10g",
+      "name": "RTX 3080",
+      "match": {
+        "names": [
+          "RTX 3080"
+        ],
+        "mem_gb_hint": 10
+      },
+      "arch": "Ampere",
+      "codename": "GA102",
+      "cuda_cores": 8704,
+      "sm_count": 68,
+      "process_nm": 8,
+      "tdp_w": 320,
+      "mem": {
+        "size_gb": 10,
+        "type": "GDDR6X",
+        "bus": 320,
+        "bandwidth": 760
+      },
+      "clocks": {
+        "base": 1440,
+        "boost": 1710,
+        "mem_mhz": 1188
+      },
+      "pcie": {
+        "gen": 4,
+        "width": 16
+      },
+      "lhr": {
+        "type": "lhr_v2"
+      },
+      "hashrate": {
+        "ethash": {
+          "locked": 58,
+          "unlocked": 100
+        }
+      }
+    },
+    {
+      "id": "rtx3080_12g",
+      "name": "RTX 3080",
+      "match": {
+        "names": [
+          "RTX 3080"
+        ],
+        "mem_gb_hint": 12
+      },
+      "arch": "Ampere",
+      "codename": "GA102",
+      "cuda_cores": 8960,
+      "sm_count": 70,
+      "process_nm": 8,
+      "tdp_w": 350,
+      "mem": {
+        "size_gb": 12,
+        "type": "GDDR6X",
+        "bus": 384,
+        "bandwidth": 912
+      },
+      "clocks": {
+        "base": 1260,
+        "boost": 1710,
+        "mem_mhz": 1188
+      },
+      "pcie": {
+        "gen": 4,
+        "width": 16
+      },
+      "lhr": {
+        "type": "lhr_v2"
+      },
+      "hashrate": {
+        "ethash": {
+          "locked": 60,
+          "unlocked": 101
+        }
+      }
+    },
+    {
+      "id": "rtx3080ti",
+      "name": "RTX 3080 Ti",
+      "match": {
+        "names": [
+          "RTX 3080 Ti"
+        ],
+        "mem_gb_hint": null
+      },
+      "arch": "Ampere",
+      "codename": "GA102",
+      "cuda_cores": 10240,
+      "sm_count": 80,
+      "process_nm": 8,
+      "tdp_w": 350,
+      "mem": {
+        "size_gb": 12,
+        "type": "GDDR6X",
+        "bus": 384,
+        "bandwidth": 912
+      },
+      "clocks": {
+        "base": 1365,
+        "boost": 1665,
+        "mem_mhz": 1188
+      },
+      "pcie": {
+        "gen": 4,
+        "width": 16
+      },
+      "lhr": {
+        "type": "lhr_v2"
+      },
+      "hashrate": {
+        "ethash": {
+          "locked": 64,
+          "unlocked": 115
+        }
+      }
+    },
+    {
+      "id": "rtx3090",
+      "name": "RTX 3090",
+      "match": {
+        "names": [
+          "RTX 3090"
+        ],
+        "mem_gb_hint": null
+      },
+      "arch": "Ampere",
+      "codename": "GA102",
+      "cuda_cores": 10496,
+      "sm_count": 82,
+      "process_nm": 8,
+      "tdp_w": 350,
+      "mem": {
+        "size_gb": 24,
+        "type": "GDDR6X",
+        "bus": 384,
+        "bandwidth": 936
+      },
+      "clocks": {
+        "base": 1395,
+        "boost": 1695,
+        "mem_mhz": 1219
+      },
+      "pcie": {
+        "gen": 4,
+        "width": 16
+      },
+      "lhr": {
+        "type": "none",
+        "note": "3090 出厂即无 LHR 限制器"
+      },
+      "hashrate": {
+        "ethash": {
+          "locked": null,
+          "unlocked": 120
+        }
+      }
+    },
+    {
+      "id": "rtx3090ti",
+      "name": "RTX 3090 Ti",
+      "match": {
+        "names": [
+          "RTX 3090 Ti"
+        ],
+        "mem_gb_hint": null
+      },
+      "arch": "Ampere",
+      "codename": "GA102",
+      "cuda_cores": 10752,
+      "sm_count": 84,
+      "process_nm": 8,
+      "tdp_w": 450,
+      "mem": {
+        "size_gb": 24,
+        "type": "GDDR6X",
+        "bus": 384,
+        "bandwidth": 1008
+      },
+      "clocks": {
+        "base": 1560,
+        "boost": 1860,
+        "mem_mhz": 1313
+      },
+      "pcie": {
+        "gen": 4,
+        "width": 16
+      },
+      "lhr": {
+        "type": "none",
+        "note": "3090 Ti 出厂即无 LHR 限制器"
+      },
+      "hashrate": {
+        "ethash": {
+          "locked": null,
+          "unlocked": 130
+        }
+      }
+    },
+    {
+      "id": "rtx4060",
+      "name": "RTX 4060",
+      "match": {
+        "names": [
+          "RTX 4060"
+        ],
+        "mem_gb_hint": null
+      },
+      "arch": "Ada Lovelace",
+      "codename": "AD107",
+      "cuda_cores": 3072,
+      "sm_count": 24,
+      "process_nm": 5,
+      "tdp_w": 115,
+      "mem": {
+        "size_gb": 8,
+        "type": "GDDR6",
+        "bus": 128,
+        "bandwidth": 272
+      },
+      "clocks": {
+        "base": 1830,
+        "boost": 2460,
+        "mem_mhz": 2125
+      },
+      "pcie": {
+        "gen": 4,
+        "width": 8
+      },
+      "lhr": {
+        "type": "none",
+        "note": "NVIDIA 在 40 系取消了 LHR"
+      },
+      "hashrate": {
+        "ethash": {
+          "locked": null,
+          "unlocked": 31
+        }
+      }
+    },
+    {
+      "id": "rtx4060ti_8g",
+      "name": "RTX 4060 Ti",
+      "match": {
+        "names": [
+          "RTX 4060 Ti"
+        ],
+        "mem_gb_hint": 8
+      },
+      "arch": "Ada Lovelace",
+      "codename": "AD106",
+      "cuda_cores": 4352,
+      "sm_count": 34,
+      "process_nm": 5,
+      "tdp_w": 160,
+      "mem": {
+        "size_gb": 8,
+        "type": "GDDR6",
+        "bus": 128,
+        "bandwidth": 288
+      },
+      "clocks": {
+        "base": 2310,
+        "boost": 2535,
+        "mem_mhz": 2250
+      },
+      "pcie": {
+        "gen": 4,
+        "width": 8
+      },
+      "lhr": {
+        "type": "none"
+      },
+      "hashrate": {
+        "ethash": {
+          "locked": null,
+          "unlocked": 36
+        }
+      }
+    },
+    {
+      "id": "rtx4060ti_16g",
+      "name": "RTX 4060 Ti",
+      "match": {
+        "names": [
+          "RTX 4060 Ti"
+        ],
+        "mem_gb_hint": 16
+      },
+      "arch": "Ada Lovelace",
+      "codename": "AD106",
+      "cuda_cores": 4352,
+      "sm_count": 34,
+      "process_nm": 5,
+      "tdp_w": 165,
+      "mem": {
+        "size_gb": 16,
+        "type": "GDDR6",
+        "bus": 128,
+        "bandwidth": 288
+      },
+      "clocks": {
+        "base": 2310,
+        "boost": 2535,
+        "mem_mhz": 2250
+      },
+      "pcie": {
+        "gen": 4,
+        "width": 8
+      },
+      "lhr": {
+        "type": "none"
+      },
+      "hashrate": {
+        "ethash": {
+          "locked": null,
+          "unlocked": 36
+        }
+      }
+    },
+    {
+      "id": "rtx4070",
+      "name": "RTX 4070",
+      "match": {
+        "names": [
+          "RTX 4070"
+        ],
+        "mem_gb_hint": null
+      },
+      "arch": "Ada Lovelace",
+      "codename": "AD104",
+      "cuda_cores": 5888,
+      "sm_count": 46,
+      "process_nm": 5,
+      "tdp_w": 200,
+      "mem": {
+        "size_gb": 12,
+        "type": "GDDR6X",
+        "bus": 192,
+        "bandwidth": 504
+      },
+      "clocks": {
+        "base": 1920,
+        "boost": 2475,
+        "mem_mhz": 1313
+      },
+      "pcie": {
+        "gen": 4,
+        "width": 16
+      },
+      "lhr": {
+        "type": "none"
+      },
+      "hashrate": {
+        "ethash": {
+          "locked": null,
+          "unlocked": 46
+        }
+      }
+    },
+    {
+      "id": "rtx4070super",
+      "name": "RTX 4070 SUPER",
+      "match": {
+        "names": [
+          "RTX 4070 SUPER",
+          "RTX 4070 Super"
+        ],
+        "mem_gb_hint": null
+      },
+      "arch": "Ada Lovelace",
+      "codename": "AD104",
+      "cuda_cores": 7168,
+      "sm_count": 56,
+      "process_nm": 5,
+      "tdp_w": 220,
+      "mem": {
+        "size_gb": 12,
+        "type": "GDDR6X",
+        "bus": 192,
+        "bandwidth": 504
+      },
+      "clocks": {
+        "base": 1980,
+        "boost": 2475,
+        "mem_mhz": 1313
+      },
+      "pcie": {
+        "gen": 4,
+        "width": 16
+      },
+      "lhr": {
+        "type": "none"
+      },
+      "hashrate": {
+        "ethash": {
+          "locked": null,
+          "unlocked": 56
+        }
+      }
+    },
+    {
+      "id": "rtx4070ti",
+      "name": "RTX 4070 Ti",
+      "match": {
+        "names": [
+          "RTX 4070 Ti"
+        ],
+        "mem_gb_hint": null
+      },
+      "arch": "Ada Lovelace",
+      "codename": "AD104",
+      "cuda_cores": 7680,
+      "sm_count": 60,
+      "process_nm": 5,
+      "tdp_w": 285,
+      "mem": {
+        "size_gb": 12,
+        "type": "GDDR6X",
+        "bus": 192,
+        "bandwidth": 504
+      },
+      "clocks": {
+        "base": 2310,
+        "boost": 2610,
+        "mem_mhz": 1313
+      },
+      "pcie": {
+        "gen": 4,
+        "width": 16
+      },
+      "lhr": {
+        "type": "none"
+      },
+      "hashrate": {
+        "ethash": {
+          "locked": null,
+          "unlocked": 60
+        }
+      }
+    },
+    {
+      "id": "rtx4070tisuper",
+      "name": "RTX 4070 Ti SUPER",
+      "match": {
+        "names": [
+          "RTX 4070 Ti SUPER",
+          "RTX 4070 Ti Super"
+        ],
+        "mem_gb_hint": null
+      },
+      "arch": "Ada Lovelace",
+      "codename": "AD103",
+      "cuda_cores": 8448,
+      "sm_count": 66,
+      "process_nm": 5,
+      "tdp_w": 285,
+      "mem": {
+        "size_gb": 16,
+        "type": "GDDR6X",
+        "bus": 256,
+        "bandwidth": 672
+      },
+      "clocks": {
+        "base": 2340,
+        "boost": 2610,
+        "mem_mhz": 1313
+      },
+      "pcie": {
+        "gen": 4,
+        "width": 16
+      },
+      "lhr": {
+        "type": "none"
+      },
+      "hashrate": {
+        "ethash": {
+          "locked": null,
+          "unlocked": 64
+        }
+      }
+    },
+    {
+      "id": "rtx4080",
+      "name": "RTX 4080",
+      "match": {
+        "names": [
+          "RTX 4080"
+        ],
+        "mem_gb_hint": 16
+      },
+      "arch": "Ada Lovelace",
+      "codename": "AD103",
+      "cuda_cores": 9728,
+      "sm_count": 76,
+      "process_nm": 5,
+      "tdp_w": 320,
+      "mem": {
+        "size_gb": 16,
+        "type": "GDDR6X",
+        "bus": 256,
+        "bandwidth": 717
+      },
+      "clocks": {
+        "base": 2205,
+        "boost": 2505,
+        "mem_mhz": 1400
+      },
+      "pcie": {
+        "gen": 4,
+        "width": 16
+      },
+      "lhr": {
+        "type": "none"
+      },
+      "hashrate": {
+        "ethash": {
+          "locked": null,
+          "unlocked": 72
+        }
+      }
+    },
+    {
+      "id": "rtx4080super",
+      "name": "RTX 4080 SUPER",
+      "match": {
+        "names": [
+          "RTX 4080 SUPER",
+          "RTX 4080 Super"
+        ],
+        "mem_gb_hint": null
+      },
+      "arch": "Ada Lovelace",
+      "codename": "AD103",
+      "cuda_cores": 10240,
+      "sm_count": 80,
+      "process_nm": 5,
+      "tdp_w": 320,
+      "mem": {
+        "size_gb": 16,
+        "type": "GDDR6X",
+        "bus": 256,
+        "bandwidth": 736
+      },
+      "clocks": {
+        "base": 2295,
+        "boost": 2550,
+        "mem_mhz": 1438
+      },
+      "pcie": {
+        "gen": 4,
+        "width": 16
+      },
+      "lhr": {
+        "type": "none"
+      },
+      "hashrate": {
+        "ethash": {
+          "locked": null,
+          "unlocked": 74
+        }
+      }
+    },
+    {
+      "id": "rtx4090",
+      "name": "RTX 4090",
+      "match": {
+        "names": [
+          "RTX 4090"
+        ],
+        "mem_gb_hint": null
+      },
+      "arch": "Ada Lovelace",
+      "codename": "AD102",
+      "cuda_cores": 16384,
+      "sm_count": 128,
+      "process_nm": 5,
+      "tdp_w": 450,
+      "mem": {
+        "size_gb": 24,
+        "type": "GDDR6X",
+        "bus": 384,
+        "bandwidth": 1008
+      },
+      "clocks": {
+        "base": 2235,
+        "boost": 2520,
+        "mem_mhz": 1313
+      },
+      "pcie": {
+        "gen": 4,
+        "width": 16
+      },
+      "lhr": {
+        "type": "none"
+      },
+      "hashrate": {
+        "ethash": {
+          "locked": null,
+          "unlocked": 125
+        }
+      }
+    },
+    {
+      "id": "rtx5060",
+      "name": "RTX 5060",
+      "match": {
+        "names": [
+          "RTX 5060"
+        ],
+        "mem_gb_hint": 8
+      },
+      "arch": "Blackwell",
+      "codename": "GB206",
+      "cuda_cores": 3840,
+      "sm_count": 30,
+      "process_nm": 5,
+      "tdp_w": 145,
+      "mem": {
+        "size_gb": 8,
+        "type": "GDDR7",
+        "bus": 128,
+        "bandwidth": 448
+      },
+      "clocks": {
+        "base": 2280,
+        "boost": 2497,
+        "mem_mhz": 1750
+      },
+      "pcie": {
+        "gen": 5,
+        "width": 8
+      },
+      "lhr": {
+        "type": "none"
+      },
+      "hashrate": {
+        "ethash": {
+          "locked": null,
+          "unlocked": null
+        }
+      }
+    },
+    {
+      "id": "rtx5060ti_8g",
+      "name": "RTX 5060 Ti",
+      "match": {
+        "names": [
+          "RTX 5060 Ti"
+        ],
+        "mem_gb_hint": 8
+      },
+      "arch": "Blackwell",
+      "codename": "GB206",
+      "cuda_cores": 4608,
+      "sm_count": 36,
+      "process_nm": 5,
+      "tdp_w": 180,
+      "mem": {
+        "size_gb": 8,
+        "type": "GDDR7",
+        "bus": 128,
+        "bandwidth": 448
+      },
+      "clocks": {
+        "base": 2407,
+        "boost": 2572,
+        "mem_mhz": 1750
+      },
+      "pcie": {
+        "gen": 5,
+        "width": 8
+      },
+      "lhr": {
+        "type": "none"
+      },
+      "hashrate": {
+        "ethash": {
+          "locked": null,
+          "unlocked": null
+        }
+      }
+    },
+    {
+      "id": "rtx5060ti_16g",
+      "name": "RTX 5060 Ti",
+      "match": {
+        "names": [
+          "RTX 5060 Ti"
+        ],
+        "mem_gb_hint": 16
+      },
+      "arch": "Blackwell",
+      "codename": "GB206",
+      "cuda_cores": 4608,
+      "sm_count": 36,
+      "process_nm": 5,
+      "tdp_w": 180,
+      "mem": {
+        "size_gb": 16,
+        "type": "GDDR7",
+        "bus": 128,
+        "bandwidth": 448
+      },
+      "clocks": {
+        "base": 2407,
+        "boost": 2572,
+        "mem_mhz": 1750
+      },
+      "pcie": {
+        "gen": 5,
+        "width": 8
+      },
+      "lhr": {
+        "type": "none"
+      },
+      "hashrate": {
+        "ethash": {
+          "locked": null,
+          "unlocked": null
+        }
+      }
+    },
+    {
+      "id": "rtx5070",
+      "name": "RTX 5070",
+      "match": {
+        "names": [
+          "RTX 5070"
+        ],
+        "mem_gb_hint": null
+      },
+      "arch": "Blackwell",
+      "codename": "GB205",
+      "cuda_cores": 6144,
+      "sm_count": 48,
+      "process_nm": 5,
+      "tdp_w": 250,
+      "mem": {
+        "size_gb": 12,
+        "type": "GDDR7",
+        "bus": 192,
+        "bandwidth": 672
+      },
+      "clocks": {
+        "base": 2160,
+        "boost": 2512,
+        "mem_mhz": 1750
+      },
+      "pcie": {
+        "gen": 5,
+        "width": 16
+      },
+      "lhr": {
+        "type": "none"
+      },
+      "hashrate": {
+        "ethash": {
+          "locked": null,
+          "unlocked": null
+        }
+      }
+    },
+    {
+      "id": "rtx5070ti",
+      "name": "RTX 5070 Ti",
+      "match": {
+        "names": [
+          "RTX 5070 Ti"
+        ],
+        "mem_gb_hint": null
+      },
+      "arch": "Blackwell",
+      "codename": "GB203",
+      "cuda_cores": 8960,
+      "sm_count": 70,
+      "process_nm": 5,
+      "tdp_w": 300,
+      "mem": {
+        "size_gb": 16,
+        "type": "GDDR7",
+        "bus": 256,
+        "bandwidth": 896
+      },
+      "clocks": {
+        "base": 2295,
+        "boost": 2452,
+        "mem_mhz": 1750
+      },
+      "pcie": {
+        "gen": 5,
+        "width": 16
+      },
+      "lhr": {
+        "type": "none"
+      },
+      "hashrate": {
+        "ethash": {
+          "locked": null,
+          "unlocked": null
+        }
+      }
+    },
+    {
+      "id": "rtx5080",
+      "name": "RTX 5080",
+      "match": {
+        "names": [
+          "RTX 5080"
+        ],
+        "mem_gb_hint": null
+      },
+      "arch": "Blackwell",
+      "codename": "GB203",
+      "cuda_cores": 10752,
+      "sm_count": 84,
+      "process_nm": 5,
+      "tdp_w": 360,
+      "mem": {
+        "size_gb": 16,
+        "type": "GDDR7",
+        "bus": 256,
+        "bandwidth": 960
+      },
+      "clocks": {
+        "base": 2295,
+        "boost": 2617,
+        "mem_mhz": 1875
+      },
+      "pcie": {
+        "gen": 5,
+        "width": 16
+      },
+      "lhr": {
+        "type": "none"
+      },
+      "hashrate": {
+        "ethash": {
+          "locked": null,
+          "unlocked": null
+        }
+      }
+    },
+    {
+      "id": "rtx5090",
+      "name": "RTX 5090",
+      "match": {
+        "names": [
+          "RTX 5090"
+        ],
+        "mem_gb_hint": null
+      },
+      "arch": "Blackwell",
+      "codename": "GB202",
+      "cuda_cores": 21760,
+      "sm_count": 170,
+      "process_nm": 5,
+      "tdp_w": 575,
+      "mem": {
+        "size_gb": 32,
+        "type": "GDDR7",
+        "bus": 512,
+        "bandwidth": 1792
+      },
+      "clocks": {
+        "base": 2017,
+        "boost": 2407,
+        "mem_mhz": 1750
+      },
+      "pcie": {
+        "gen": 5,
+        "width": 16
+      },
+      "lhr": {
+        "type": "none"
+      },
+      "hashrate": {
+        "ethash": {
+          "locked": null,
+          "unlocked": null
+        }
+      }
+    }
+  ],
+  "sources": {
+    "lhr_removed": {
+      "claim": "NVIDIA 自 R515 驱动分支起移除 LHR 限制器；Windows 首个确认版本为 516.94，Linux 为 515.65.01。",
+      "url": "https://docs.nvidia.com/datacenter/tesla/pdf/NVIDIA_Data_Center_GPU_Driver_Release_Notes_515_v2.0.pdf"
+    },
+    "lhr_v2_unlock": {
+      "claim": "LHR v2 的软件解禁需要同时修改 VBIOS 与专用驱动（如 LHRv2Unlocker），因此「已解锁」等价于「正在使用非公开驱动」。",
+      "url": "https://github.com/LiyuanLucasLiu/NvidiaRTX-LHRv2Unlocker"
+    },
+    "ethash_values": {
+      "claim": "解锁后算力取自 LHRv2Unlocker 项目公开实测（3060 v2 49 / 3060Ti 61 / 3070 57 / 3070Ti 69 / 3080 100 / 3080Ti 115 MH/s）；默认值取同型号无解锁驱动下的公开矿工实测中位数。",
+      "url": "https://github.com/LiyuanLucasLiu/NvidiaRTX-LHRv2Unlocker"
+    }
+  },
+  "lhr_ids": {
+    "note": "已知的 LHR 版本 PCI Device ID（同一核心，后缀不同）。仅作辅助证据，不作为唯一判据。",
+    "ids": {
+      "2206": "GA102 RTX 3080",
+      "2208": "GA102 RTX 3080 Ti",
+      "2501": "GA106 RTX 3060 (v1)",
+      "2503": "GA106 RTX 3060",
+      "2504": "GA106 RTX 3060 Lite Hash Rate",
+      "2505": "GA106 RTX 3060 Lite Hash Rate",
+      "2507": "GA104 RTX 3070 Lite Hash Rate",
+      "2508": "GA104 RTX 3070 Ti Lite Hash Rate"
+    }
+  },
+  "tflops_reference": {
+    "note": "每个型号的解锁后算力不同，判定必须按型号匹配。区间来自：实测（3070 Ti）或按 SM×256×2×boost 推算（其余）。",
+    "cases": {
+      "fp16_fp32acc_4096": {
+        "algo": "FP16 + FP32 累加 @4096^3"
+      },
+      "bf16_fp32acc_4096": {
+        "algo": "BF16 + FP32 累加 @4096^3"
+      },
+      "fp16_fp32acc_8192": {
+        "algo": "FP16 @8192^3"
+      },
+      "bf16_fp32acc_8192": {
+        "algo": "BF16 @8192^3"
+      },
+      "fp32_ref_4096": {
+        "algo": "FP32 (control)"
+      }
+    },
+    "by_model": {
+      "rtx3050_8g": {
+        "fp16_fp32acc_4096": {
+          "locked": [
+            7,
+            10
+          ],
+          "unlocked": [
+            17,
+            19
+          ]
+        },
+        "bf16_fp32acc_4096": {
+          "locked": [
+            7,
+            10
+          ],
+          "unlocked": [
+            16,
+            19
+          ]
+        },
+        "fp16_fp32acc_8192": {
+          "locked": [
+            7,
+            11
+          ],
+          "unlocked": [
+            17,
+            20
+          ]
+        },
+        "bf16_fp32acc_8192": {
+          "locked": null,
+          "unlocked": [
+            17,
+            20
+          ]
+        },
+        "fp32_ref_4096": {
+          "locked": null,
+          "unlocked": null,
+          "control": true
+        },
+        "theo_peak": 18.2
+      },
+      "rtx3060_12g": {
+        "fp16_fp32acc_4096": {
+          "locked": [
+            10,
+            14
+          ],
+          "unlocked": [
+            24,
+            26
+          ]
+        },
+        "bf16_fp32acc_4096": {
+          "locked": [
+            10,
+            14
+          ],
+          "unlocked": [
+            23,
+            26
+          ]
+        },
+        "fp16_fp32acc_8192": {
+          "locked": [
+            11,
+            15
+          ],
+          "unlocked": [
+            24,
+            27
+          ]
+        },
+        "bf16_fp32acc_8192": {
+          "locked": null,
+          "unlocked": [
+            24,
+            27
+          ]
+        },
+        "fp32_ref_4096": {
+          "locked": null,
+          "unlocked": null,
+          "control": true
+        },
+        "theo_peak": 25.5
+      },
+      "rtx3060_8g": {
+        "fp16_fp32acc_4096": {
+          "locked": [
+            10,
+            14
+          ],
+          "unlocked": [
+            24,
+            26
+          ]
+        },
+        "bf16_fp32acc_4096": {
+          "locked": [
+            10,
+            14
+          ],
+          "unlocked": [
+            23,
+            26
+          ]
+        },
+        "fp16_fp32acc_8192": {
+          "locked": [
+            11,
+            15
+          ],
+          "unlocked": [
+            24,
+            27
+          ]
+        },
+        "bf16_fp32acc_8192": {
+          "locked": null,
+          "unlocked": [
+            24,
+            27
+          ]
+        },
+        "fp32_ref_4096": {
+          "locked": null,
+          "unlocked": null,
+          "control": true
+        },
+        "theo_peak": 25.5
+      },
+      "rtx3060ti": {
+        "fp16_fp32acc_4096": {
+          "locked": [
+            12,
+            19
+          ],
+          "unlocked": [
+            30,
+            34
+          ]
+        },
+        "bf16_fp32acc_4096": {
+          "locked": [
+            12,
+            19
+          ],
+          "unlocked": [
+            29,
+            34
+          ]
+        },
+        "fp16_fp32acc_8192": {
+          "locked": [
+            13,
+            20
+          ],
+          "unlocked": [
+            30,
+            35
+          ]
+        },
+        "bf16_fp32acc_8192": {
+          "locked": null,
+          "unlocked": [
+            30,
+            35
+          ]
+        },
+        "fp32_ref_4096": {
+          "locked": null,
+          "unlocked": null,
+          "control": true
+        },
+        "theo_peak": 32.4
+      },
+      "rtx3070": {
+        "fp16_fp32acc_4096": {
+          "locked": [
+            15,
+            23
+          ],
+          "unlocked": [
+            38,
+            42
+          ]
+        },
+        "bf16_fp32acc_4096": {
+          "locked": [
+            15,
+            23
+          ],
+          "unlocked": [
+            37,
+            42
+          ]
+        },
+        "fp16_fp32acc_8192": {
+          "locked": [
+            16,
+            24
+          ],
+          "unlocked": [
+            38,
+            43
+          ]
+        },
+        "bf16_fp32acc_8192": {
+          "locked": null,
+          "unlocked": [
+            38,
+            43
+          ]
+        },
+        "fp32_ref_4096": {
+          "locked": null,
+          "unlocked": null,
+          "control": true
+        },
+        "theo_peak": 40.6
+      },
+      "rtx3070ti": {
+        "fp16_fp32acc_4096": {
+          "locked": [
+            31,
+            42
+          ],
+          "unlocked": [
+            77,
+            84
+          ]
+        },
+        "bf16_fp32acc_4096": {
+          "locked": [
+            30,
+            43
+          ],
+          "unlocked": [
+            77,
+            84
+          ]
+        },
+        "fp16_fp32acc_8192": {
+          "locked": [
+            33,
+            42
+          ],
+          "unlocked": [
+            77,
+            84
+          ]
+        },
+        "bf16_fp32acc_8192": {
+          "locked": null,
+          "unlocked": [
+            77,
+            84
+          ]
+        },
+        "fp32_ref_4096": {
+          "locked": [
+            10.4,
+            10.4
+          ],
+          "unlocked": null,
+          "control": true
+        },
+        "theo_peak": 43.5
+      },
+      "rtx3080_10g": {
+        "fp16_fp32acc_4096": {
+          "locked": [
+            22,
+            34
+          ],
+          "unlocked": [
+            56,
+            62
+          ]
+        },
+        "bf16_fp32acc_4096": {
+          "locked": [
+            21,
+            34
+          ],
+          "unlocked": [
+            54,
+            62
+          ]
+        },
+        "fp16_fp32acc_8192": {
+          "locked": [
+            23,
+            36
+          ],
+          "unlocked": [
+            57,
+            64
+          ]
+        },
+        "bf16_fp32acc_8192": {
+          "locked": null,
+          "unlocked": [
+            57,
+            64
+          ]
+        },
+        "fp32_ref_4096": {
+          "locked": null,
+          "unlocked": null,
+          "control": true
+        },
+        "theo_peak": 59.5
+      },
+      "rtx3080_12g": {
+        "fp16_fp32acc_4096": {
+          "locked": [
+            23,
+            35
+          ],
+          "unlocked": [
+            58,
+            64
+          ]
+        },
+        "bf16_fp32acc_4096": {
+          "locked": [
+            22,
+            35
+          ],
+          "unlocked": [
+            56,
+            64
+          ]
+        },
+        "fp16_fp32acc_8192": {
+          "locked": [
+            24,
+            37
+          ],
+          "unlocked": [
+            59,
+            66
+          ]
+        },
+        "bf16_fp32acc_8192": {
+          "locked": null,
+          "unlocked": [
+            59,
+            66
+          ]
+        },
+        "fp32_ref_4096": {
+          "locked": null,
+          "unlocked": null,
+          "control": true
+        },
+        "theo_peak": 61.3
+      },
+      "rtx3080ti": {
+        "fp16_fp32acc_4096": {
+          "locked": [
+            26,
+            39
+          ],
+          "unlocked": [
+            64,
+            71
+          ]
+        },
+        "bf16_fp32acc_4096": {
+          "locked": [
+            25,
+            39
+          ],
+          "unlocked": [
+            62,
+            71
+          ]
+        },
+        "fp16_fp32acc_8192": {
+          "locked": [
+            27,
+            41
+          ],
+          "unlocked": [
+            65,
+            73
+          ]
+        },
+        "bf16_fp32acc_8192": {
+          "locked": null,
+          "unlocked": [
+            65,
+            73
+          ]
+        },
+        "fp32_ref_4096": {
+          "locked": null,
+          "unlocked": null,
+          "control": true
+        },
+        "theo_peak": 68.2
+      },
+      "rtx3090": {
+        "fp16_fp32acc_4096": {
+          "locked": [
+            27,
+            41
+          ],
+          "unlocked": [
+            67,
+            74
+          ]
+        },
+        "bf16_fp32acc_4096": {
+          "locked": [
+            26,
+            41
+          ],
+          "unlocked": [
+            65,
+            74
+          ]
+        },
+        "fp16_fp32acc_8192": {
+          "locked": [
+            28,
+            43
+          ],
+          "unlocked": [
+            68,
+            76
+          ]
+        },
+        "bf16_fp32acc_8192": {
+          "locked": null,
+          "unlocked": [
+            68,
+            76
+          ]
+        },
+        "fp32_ref_4096": {
+          "locked": null,
+          "unlocked": null,
+          "control": true
+        },
+        "theo_peak": 71.2
+      },
+      "rtx3090ti": {
+        "fp16_fp32acc_4096": {
+          "locked": [
+            30,
+            46
+          ],
+          "unlocked": [
+            75,
+            83
+          ]
+        },
+        "bf16_fp32acc_4096": {
+          "locked": [
+            29,
+            46
+          ],
+          "unlocked": [
+            73,
+            83
+          ]
+        },
+        "fp16_fp32acc_8192": {
+          "locked": [
+            32,
+            49
+          ],
+          "unlocked": [
+            76,
+            85
+          ]
+        },
+        "bf16_fp32acc_8192": {
+          "locked": null,
+          "unlocked": [
+            76,
+            85
+          ]
+        },
+        "fp32_ref_4096": {
+          "locked": null,
+          "unlocked": null,
+          "control": true
+        },
+        "theo_peak": 80
+      },
+      "rtx4060": {
+        "fp16_fp32acc_4096": {
+          "locked": [
+            11,
+            17
+          ],
+          "unlocked": [
+            28,
+            31
+          ]
+        },
+        "bf16_fp32acc_4096": {
+          "locked": [
+            11,
+            17
+          ],
+          "unlocked": [
+            27,
+            31
+          ]
+        },
+        "fp16_fp32acc_8192": {
+          "locked": [
+            12,
+            18
+          ],
+          "unlocked": [
+            28,
+            32
+          ]
+        },
+        "bf16_fp32acc_8192": {
+          "locked": null,
+          "unlocked": [
+            28,
+            32
+          ]
+        },
+        "fp32_ref_4096": {
+          "locked": null,
+          "unlocked": null,
+          "control": true
+        },
+        "theo_peak": 30.2
+      },
+      "rtx4060ti_8g": {
+        "fp16_fp32acc_4096": {
+          "locked": [
+            16,
+            25
+          ],
+          "unlocked": [
+            41,
+            46
+          ]
+        },
+        "bf16_fp32acc_4096": {
+          "locked": [
+            16,
+            25
+          ],
+          "unlocked": [
+            40,
+            46
+          ]
+        },
+        "fp16_fp32acc_8192": {
+          "locked": [
+            17,
+            27
+          ],
+          "unlocked": [
+            41,
+            47
+          ]
+        },
+        "bf16_fp32acc_8192": {
+          "locked": null,
+          "unlocked": [
+            41,
+            47
+          ]
+        },
+        "fp32_ref_4096": {
+          "locked": null,
+          "unlocked": null,
+          "control": true
+        },
+        "theo_peak": 44.1
+      },
+      "rtx4060ti_16g": {
+        "fp16_fp32acc_4096": {
+          "locked": [
+            16,
+            25
+          ],
+          "unlocked": [
+            41,
+            46
+          ]
+        },
+        "bf16_fp32acc_4096": {
+          "locked": [
+            16,
+            25
+          ],
+          "unlocked": [
+            40,
+            46
+          ]
+        },
+        "fp16_fp32acc_8192": {
+          "locked": [
+            17,
+            27
+          ],
+          "unlocked": [
+            41,
+            47
+          ]
+        },
+        "bf16_fp32acc_8192": {
+          "locked": null,
+          "unlocked": [
+            41,
+            47
+          ]
+        },
+        "fp32_ref_4096": {
+          "locked": null,
+          "unlocked": null,
+          "control": true
+        },
+        "theo_peak": 44.1
+      },
+      "rtx4070": {
+        "fp16_fp32acc_4096": {
+          "locked": [
+            22,
+            34
+          ],
+          "unlocked": [
+            55,
+            61
+          ]
+        },
+        "bf16_fp32acc_4096": {
+          "locked": [
+            21,
+            34
+          ],
+          "unlocked": [
+            53,
+            61
+          ]
+        },
+        "fp16_fp32acc_8192": {
+          "locked": [
+            23,
+            36
+          ],
+          "unlocked": [
+            56,
+            63
+          ]
+        },
+        "bf16_fp32acc_8192": {
+          "locked": null,
+          "unlocked": [
+            56,
+            63
+          ]
+        },
+        "fp32_ref_4096": {
+          "locked": null,
+          "unlocked": null,
+          "control": true
+        },
+        "theo_peak": 58.3
+      },
+      "rtx4070super": {
+        "fp16_fp32acc_4096": {
+          "locked": [
+            27,
+            41
+          ],
+          "unlocked": [
+            67,
+            74
+          ]
+        },
+        "bf16_fp32acc_4096": {
+          "locked": [
+            26,
+            41
+          ],
+          "unlocked": [
+            65,
+            74
+          ]
+        },
+        "fp16_fp32acc_8192": {
+          "locked": [
+            28,
+            43
+          ],
+          "unlocked": [
+            68,
+            76
+          ]
+        },
+        "bf16_fp32acc_8192": {
+          "locked": null,
+          "unlocked": [
+            68,
+            76
+          ]
+        },
+        "fp32_ref_4096": {
+          "locked": null,
+          "unlocked": null,
+          "control": true
+        },
+        "theo_peak": 71
+      },
+      "rtx4070ti": {
+        "fp16_fp32acc_4096": {
+          "locked": [
+            30,
+            46
+          ],
+          "unlocked": [
+            75,
+            83
+          ]
+        },
+        "bf16_fp32acc_4096": {
+          "locked": [
+            29,
+            46
+          ],
+          "unlocked": [
+            73,
+            83
+          ]
+        },
+        "fp16_fp32acc_8192": {
+          "locked": [
+            32,
+            49
+          ],
+          "unlocked": [
+            76,
+            85
+          ]
+        },
+        "bf16_fp32acc_8192": {
+          "locked": null,
+          "unlocked": [
+            76,
+            85
+          ]
+        },
+        "fp32_ref_4096": {
+          "locked": null,
+          "unlocked": null,
+          "control": true
+        },
+        "theo_peak": 80.2
+      },
+      "rtx4070tisuper": {
+        "fp16_fp32acc_4096": {
+          "locked": [
+            33,
+            51
+          ],
+          "unlocked": [
+            83,
+            92
+          ]
+        },
+        "bf16_fp32acc_4096": {
+          "locked": [
+            32,
+            50
+          ],
+          "unlocked": [
+            81,
+            92
+          ]
+        },
+        "fp16_fp32acc_8192": {
+          "locked": [
+            35,
+            54
+          ],
+          "unlocked": [
+            84,
+            95
+          ]
+        },
+        "bf16_fp32acc_8192": {
+          "locked": null,
+          "unlocked": [
+            84,
+            95
+          ]
+        },
+        "fp32_ref_4096": {
+          "locked": null,
+          "unlocked": null,
+          "control": true
+        },
+        "theo_peak": 88.2
+      },
+      "rtx4080": {
+        "fp16_fp32acc_4096": {
+          "locked": [
+            37,
+            56
+          ],
+          "unlocked": [
+            92,
+            101
+          ]
+        },
+        "bf16_fp32acc_4096": {
+          "locked": [
+            36,
+            55
+          ],
+          "unlocked": [
+            89,
+            101
+          ]
+        },
+        "fp16_fp32acc_8192": {
+          "locked": [
+            39,
+            59
+          ],
+          "unlocked": [
+            93,
+            104
+          ]
+        },
+        "bf16_fp32acc_8192": {
+          "locked": null,
+          "unlocked": [
+            93,
+            104
+          ]
+        },
+        "fp32_ref_4096": {
+          "locked": null,
+          "unlocked": null,
+          "control": true
+        },
+        "theo_peak": 97.5
+      },
+      "rtx4080super": {
+        "fp16_fp32acc_4096": {
+          "locked": [
+            39,
+            60
+          ],
+          "unlocked": [
+            98,
+            109
+          ]
+        },
+        "bf16_fp32acc_4096": {
+          "locked": [
+            38,
+            59
+          ],
+          "unlocked": [
+            95,
+            109
+          ]
+        },
+        "fp16_fp32acc_8192": {
+          "locked": [
+            41,
+            64
+          ],
+          "unlocked": [
+            99,
+            112
+          ]
+        },
+        "bf16_fp32acc_8192": {
+          "locked": null,
+          "unlocked": [
+            99,
+            112
+          ]
+        },
+        "fp32_ref_4096": {
+          "locked": null,
+          "unlocked": null,
+          "control": true
+        },
+        "theo_peak": 104.4
+      },
+      "rtx4090": {
+        "fp16_fp32acc_4096": {
+          "locked": [
+            62,
+            95
+          ],
+          "unlocked": [
+            155,
+            172
+          ]
+        },
+        "bf16_fp32acc_4096": {
+          "locked": [
+            60,
+            94
+          ],
+          "unlocked": [
+            150,
+            172
+          ]
+        },
+        "fp16_fp32acc_8192": {
+          "locked": [
+            65,
+            101
+          ],
+          "unlocked": [
+            157,
+            177
+          ]
+        },
+        "bf16_fp32acc_8192": {
+          "locked": null,
+          "unlocked": [
+            157,
+            177
+          ]
+        },
+        "fp32_ref_4096": {
+          "locked": null,
+          "unlocked": null,
+          "control": true
+        },
+        "theo_peak": 165.2
+      }
+    },
+    "fallback": {
+      "note": "型号库没有该卡数据时的通用判据：以 FP16acc 对照值为基准的比例",
+      "ratio_locked_max": 0.65,
+      "ratio_unlocked_min": 0.85
+    },
+    "estimate_note": "解锁后算力 = 白皮书 FP16acc 速率（SM x 256 x 2 x boost），以 4090 实测 165 TFLOPS 为锚按 SM 等比外推；Ampere 乘 0.92 架构效率系数。锁定态取解锁后的 40%~52%。3070 Ti 是本机真实实测区间，优先级最高。其余型号为估算，仅用于判定阈值。",
+    "source": "解锁后 = 理论 FP16acc 峰值 = SM x 256 x 2 x boostGHz（项目文档 §6 公式，3090/4090/2757 三点验证吻合，达成率 99.7~100%）。 锁定态 = 解锁后 x 40%~55%（半速钳制再按 cuBLAS 口径达成率折算）。 RTX 3070 Ti 用实测区间：锁定 31~42（本机 torch 实测）、解锁 77~84（项目 mma_bench 口径与参考图一致）。 注意：不同基准口径（cuBLAS vs mma_bench）绝对值有差异，判定阈值按各自型号的区间取。"
+  }
+}
