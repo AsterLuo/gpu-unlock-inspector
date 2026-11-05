@@ -8,10 +8,10 @@ unlocked reference → prints a verdict.
 
 Single-file portable Windows tool · no install · no admin rights · read-only collection
 
-[![Release](https://img.shields.io/badge/release-v1.0.0-6c5ce7)](../../releases/latest)
-[![Platform](https://img.shields.io/badge/platform-Windows%2010%2F11-4a9eff)](../../releases/latest)
+[![Release](https://img.shields.io/badge/release-v1.0.0-6c5ce7)](https://github.com/AsterLuo/gpu-unlock-inspector/releases/latest)
+[![Platform](https://img.shields.io/badge/platform-Windows%2010%2F11-4a9eff)](https://github.com/AsterLuo/gpu-unlock-inspector/releases/latest)
 [![Python](https://img.shields.io/badge/python-3.10%2B-3776ab)](https://www.python.org/)
-[![License](https://img.shields.io/badge/license-MIT-2ee6a8)](LICENSE)
+[![License](https://img.shields.io/badge/license-MIT-2ee6a8)](https://github.com/AsterLuo/gpu-unlock-inspector/blob/main/LICENSE)
 
 **English** · [简体中文](README.md)
 
@@ -62,7 +62,7 @@ The stance of this tool is simple:
 
 ### Prebuilt binary (recommended)
 
-1. Grab `GPUUnlockInspector-v1.0.0-win64.zip` from [Releases](../../releases/latest)
+1. Grab `GPUUnlockInspector-v1.0.0-win64.zip` from [Releases](https://github.com/AsterLuo/gpu-unlock-inspector/releases/latest)
 2. Extract anywhere (**avoid `C:\Program Files`** — config and logs live next to the exe)
 3. Double-click `GPUUnlockInspector.exe`
 
@@ -430,7 +430,7 @@ python tests\test_selfcheck.py
 
 ## License & credits
 
-- This source is released under the [MIT](LICENSE) license.
+- This source is released under the [MIT](https://github.com/AsterLuo/gpu-unlock-inspector/blob/main/LICENSE) license.
 - The LHR removal version comes from NVIDIA's official release notes.
 - Ethash reference figures come from [LHRv2Unlocker](https://github.com/LiyuanLucasLiu/NvidiaRTX-LHRv2Unlocker).
 - The verdict formula, family routing and `ssdiag` come from

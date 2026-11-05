@@ -7,10 +7,10 @@
 
 单文件便携 Windows 工具 · 免安装 · 免管理员权限 · 只读采集
 
-[![Release](https://img.shields.io/badge/release-v1.0.0-6c5ce7)](../../releases/latest)
-[![Platform](https://img.shields.io/badge/platform-Windows%2010%2F11-4a9eff)](../../releases/latest)
+[![Release](https://img.shields.io/badge/release-v1.0.0-6c5ce7)](https://github.com/AsterLuo/gpu-unlock-inspector/releases/latest)
+[![Platform](https://img.shields.io/badge/platform-Windows%2010%2F11-4a9eff)](https://github.com/AsterLuo/gpu-unlock-inspector/releases/latest)
 [![Python](https://img.shields.io/badge/python-3.10%2B-3776ab)](https://www.python.org/)
-[![License](https://img.shields.io/badge/license-MIT-2ee6a8)](LICENSE)
+[![License](https://img.shields.io/badge/license-MIT-2ee6a8)](https://github.com/AsterLuo/gpu-unlock-inspector/blob/main/LICENSE)
 
 [English](README.en.md) · **简体中文**
 
@@ -60,7 +60,7 @@ loader.log 只说明上一次引导成功过，不说明值还在。** 寄存器
 
 ### 用打包好的版本（推荐）
 
-1. 到 [Releases](../../releases/latest) 下载 `GPUUnlockInspector-v1.0.0-win64.zip`
+1. 到 [Releases](https://github.com/AsterLuo/gpu-unlock-inspector/releases/latest) 下载 `GPUUnlockInspector-v1.0.0-win64.zip`
 2. 解压到任意目录（**别放 C:\Program Files**，配置与日志写在 exe 同目录）
 3. 双击 `GPUUnlockInspector.exe`
 
@@ -409,7 +409,7 @@ python tests\test_selfcheck.py
 
 ## 许可与致谢
 
-- 本项目源码以 [MIT](LICENSE) 许可发布。
+- 本项目源码以 [MIT](https://github.com/AsterLuo/gpu-unlock-inspector/blob/main/LICENSE) 许可发布。
 - LHR 移除版本来自 NVIDIA 官方发布说明。
 - Ethash 参考值来自 [LHRv2Unlocker](https://github.com/LiyuanLucasLiu/NvidiaRTX-LHRv2Unlocker)。
 - 判定公式、家族路由、`ssdiag` 来自 [physicsdolphin/nv-uefi-unlocker](https://github.com/physicsdolphin/nv-uefi-unlocker)（GPL-2.0）。
