@@ -8,10 +8,11 @@ unlocked reference → prints a verdict.
 
 Single-file portable Windows tool · no install · no admin rights · read-only collection
 
-[![Release](https://img.shields.io/badge/release-v1.0.0-6c5ce7)](https://github.com/AsterLuo/gpu-unlock-inspector/releases/latest)
+[![Release](https://img.shields.io/badge/release-v1.1.0-6c5ce7)](https://github.com/AsterLuo/gpu-unlock-inspector/releases/latest)
 [![Platform](https://img.shields.io/badge/platform-Windows%2010%2F11-4a9eff)](https://github.com/AsterLuo/gpu-unlock-inspector/releases/latest)
 [![Python](https://img.shields.io/badge/python-3.10%2B-3776ab)](https://www.python.org/)
 [![License](https://img.shields.io/badge/license-MIT-2ee6a8)](https://github.com/AsterLuo/gpu-unlock-inspector/blob/main/LICENSE)
+[![Selfcheck](https://img.shields.io/badge/selfcheck-317%20passed-2ee6a8)](https://github.com/AsterLuo/gpu-unlock-inspector)
 
 **English** · [简体中文](README.md)
 
@@ -62,7 +63,7 @@ The stance of this tool is simple:
 
 ### Prebuilt binary (recommended)
 
-1. Grab `GPUUnlockInspector-v1.0.0-win64.zip` from [Releases](https://github.com/AsterLuo/gpu-unlock-inspector/releases/latest)
+1. Grab `GPUUnlockInspector-v1.1.0-win64.zip` from [Releases](https://github.com/AsterLuo/gpu-unlock-inspector/releases/latest)
 2. Extract anywhere (**avoid `C:\Program Files`** — config and logs live next to the exe)
 3. Double-click `GPUUnlockInspector.exe`
 
@@ -105,6 +106,18 @@ startup
 | `self_ratio` (fallback) | no reference available; uses FP16+FP32acc ÷ FP16+FP16acc | the full-speed path was never locked |
 
 `self_ratio` thresholds: `< 0.65` locked, `> 0.85` unlocked, in between unknown.
+
+### The three-layer decision chain (what "why this verdict" shows)
+
+| Layer | Evidence | Weight |
+| --- | --- | --- |
+| ① Measured compute | TFLOPS vs the model reference × 0.75 | **hard veto** — a failing measurement means locked; the later layers cannot overturn it |
+| ② This boot's `loader.log` | log verdict + freshness (`mtime >= boot - 120s`) | supporting; **overturned** when it contradicts the measurement |
+| ③ Driver-version inference | LHR removal version (≥ 516.94) | **fallback** — used only when the first two give nothing |
+
+The dialog tags each layer **active / overturned / not used** and shows its own numbers
+(ratio, log timestamp, device id) — no black-box conclusion. The logic lives in `core/unlock.py`
+and is decoupled from the UI, so interface revisions never change the verdict rules.
 
 ### Two different kinds of "unlock" — don't conflate them
 
@@ -161,13 +174,13 @@ It has been validated at three points by that project: 3090 (71.5 vs 71 datashee
 
 | Block | Contents |
 | --- | --- |
-| **Hero verdict** | State badge (unlocked / unlocking / locked / unknown) + compute uplift % + model / architecture / driver / VBIOS |
+| **Hero verdict** | State badge (unlocked / unlocking / locked / unknown) + compute uplift % + current compute + model / architecture / driver / VBIOS + two entry buttons |
 | **Overview** | Power, temperature, fan RPM, GPU utilization, memory utilization, power limit, CUDA cores, SM count, process node, TDP, memory type, bus width, bandwidth, core clocks, PCIe link |
 | **Detailed parameters** | Raw per-field readings, each tagged with its source (NVML direct / nvidia-smi / WMI fallback / model DB) |
 
 **Three-state hero**: before any measurement the badge reads "pending" (neutral gray) —
-driver-version inference is shown only in the "why this verdict" table and never pretends to be
-a measurement. The number below the badge: no measurement → "current compute —";
+driver-version inference is shown only inside the "why this verdict" dialog and never pretends to
+be a measurement. The number below the badge: no measurement → "current compute —";
 measurement but no pre-unlock archive → "current compute xx TFLOPS"; both present →
 "vs. pre-unlock ±x.x%" (**signs are honest**, negatives in red).
 
@@ -200,11 +213,25 @@ never fake progress.**
 | Download portable Python / install torch | real percentage (Content-Length / pip progress parsing) |
 | Scan USB / refresh GPU info / build USB | spinner (not estimable) |
 
-![Running](docs/images/08-running.png)
+### 3. Why this verdict (three-layer dialog)
 
-### 3. Bootable USB
+| Locked | Unlocked |
+| --- | --- |
+| ![Basis locked](docs/images/06-basis-locked.png) | ![Basis unlocked](docs/images/07-basis-unlocked.png) |
 
-![USB](docs/images/05-usb.png)
+Opened from the hero's "why this verdict" button. This dialog was rebuilt in v1.1: the old one
+dumped the early "driver-version inference" rule table (LHR removal version / LHR device id /
+memory clock / power) — and ever since the verdict moved to "measured TFLOPS first", **none of
+those rules participates in the final answer**, while the real criterion was not shown at all.
+Now it renders only the three layers actually in effect, tagging each one.
+
+Example (left): the measurement is 32.8 / 77 TFLOPS = **43%**, so locked; this boot's `loader.log`
+says unlocked, so that layer is **overturned**; driver inference is "not used". The footer
+explains why the log says unlocked while the measurement says locked.
+
+### 4. Bootable USB
+
+![USB](docs/images/03-usb.png)
 
 Detects unlock boot sticks and reads their `loader.log`:
 
@@ -225,9 +252,9 @@ adapted them).
 capacity, then typing the drive letter. Assets are not bundled — they are fetched on demand
 (~81 MB, maker plus firmware) and the original license applies to them.
 
-### 4. Cross-reboot comparison
+### 5. Cross-reboot comparison
 
-![Cross-boot](docs/images/03-crossboot.png)
+![Cross-boot](docs/images/04-crossboot.png)
 
 Unlocking happens at the UEFI pre-driver stage via a USB boot — **there is no hot unlock inside
 running Windows** — so the before/after comparison must span a reboot:
@@ -239,7 +266,7 @@ running Windows** — so the before/after comparison must span a reboot:
 | ③ Second boot (unlocked) | run again → click **save as post-unlock** |
 | ④ Auto-pair | gets a **compute** and a **baseline** comparison, side by side, each with its own uplift % |
 
-![Cross-boot detail](docs/images/04-crossboot-detail.png)
+![Cross-boot detail](docs/images/05-history.png)
 
 One click stores **both tests of the whole section** (6 TFLOPS cases + baseline curve and
 metrics) as a single JSON, split into two subfolders:
@@ -268,19 +295,22 @@ deleting the folder clears everything.
 Screenshots use pure Win32 (BitBlt + `CF_DIB`) with no Pillow dependency, and also leave a PNG
 backup next to the exe.
 
-### 5. Dark and light themes
+### 6. Measurement history
+
+![History](docs/images/05-history.png)
+
+Every saved run lands in a ledger (time / kind / average / peak / uplift); rows can be deleted
+one by one or the whole table cleared.
+
+### 7. Dark and light themes
 
 | Dark | Light |
 | --- | --- |
-| ![Dark](docs/images/06-dark.png) | ![Light](docs/images/07-light.png) |
+| ![Dark](docs/images/08-dark.png) | ![Light](docs/images/10-hero-unlocked.png) |
 
-The top bar toggles **中文 / English**, **dark / light**, **motion on/off** and **sound on/off**.
+The verdict dialog is contrast-checked in dark mode too:
 
-### 6. Onboarding and progress dialogs
-
-| Missing environment | Install progress | Generic progress |
-| --- | --- | --- |
-| ![Missing](docs/images/10-install-prompt.png) | ![Install](docs/images/09-install-dialog.png) | ![Progress](docs/images/11-progress-dialog.png) |
+![Dark basis](docs/images/09-basis-dark.png)
 
 ---
 
@@ -324,7 +354,7 @@ reskin.
 
 Both light and dark token sets were measured so that every foreground/background pair is
 **≥ 4.5:1** (WCAG AA body text), continuously enforced by
-`tests/test_selfcheck.py::test_a11y_and_tokens`.
+`tests/test_selfcheck.py::test_a11y_and_tokens` (18 pairs across both themes).
 
 | Token | Light | Ratio | Dark | Ratio |
 | --- | --- | ---: | --- | ---: |
@@ -335,6 +365,37 @@ Both light and dark token sets were measured so that every foreground/background
 | `ok` success | #107a58 | 5.3 | #2ee6a8 | 10.8 |
 | `warn` warning | #9c5a00 | 5.4 | #f5b545 | 9.7 |
 | `bad` error | #c62828 | 5.6 | #ff6b6f | 6.3 |
+
+### Type scale and weight (a notable v1.1 fix)
+
+The numbers in `FONTS` are **points (pt)**, converted at render time by
+`px = pt × 96/72 × DPI × size boost` and then handed to Tk as a **negative** value
+(Tk treats a negative size as pixels; a positive one as points).
+
+That conversion used to be missing: the whole scale was rendered as if the numbers were already
+pixels, i.e. only 76% of the design value — `small` should be 13px but rendered at 10px.
+That was the actual root cause behind "some text is completely unreadable".
+
+| Token | pt | px (96 DPI · large 1.15) | Use |
+| --- | --- | --- | --- |
+| `display` / `metric` | 30 / 34 | 46 / 52 | hero verdict |
+| `h1` / `h2` / `h3` | 22 / 16 / 13 | 34 / 25 / 20 | card headings |
+| `body` / `small` | 11 / 10 | 17 / 15 | body / auxiliary |
+| `mono` | 10 | 15 | tabular numbers |
+
+Size boosts: `normal` 1.0 / `large` 1.15 (default) / `xlarge` 1.3.
+**Bold is on by default** (`BOLD_BY_DEFAULT`) — thin Chinese glyphs smear at 1080p scaling;
+the top bar's "regular / bold" switch reverts it in one click.
+
+> With the larger type, seven controls no longer fit on one row (measured: they overlap at 1360px),
+> so the top bar is split into two rows: display settings (size / weight / language) on top,
+> behaviour settings (motion / sound / theme / refresh) below.
+
+### Table column widths
+
+The four columns of the compute table (case / locked range / measured / verdict) now share width
+via `grid` `weight` ratios instead of `Label(width=N)` — Tk's width unit is **characters**, so
+a larger type size pushed the last column out of the card ("unknown" was once clipped to "unk…").
 
 ### Motion tokens
 
@@ -373,9 +434,14 @@ Three very short cues, pure Win32 `PlaySound` on in-memory WAV (no audio library
 | `md` and up | ≥ 1080px | two columns (overview/details, compute/baseline) |
 | below `md` | 880–1079px | single stacked column |
 
+The window `minsize` is **880×640** — it must stay below the 1080 `md` breakpoint, otherwise the
+single-column layout is unreachable (historical bug: minsize once equalled the breakpoint).
+
 - every button is `takefocus=1`, reachable with `Tab`, and `Space`/`Enter` activate it
 - focus draws a 2px `focus_ring`; all four states (normal/hover/active/disabled) are distinguishable
 - disabled sets `cursor=arrow` + `disabled_fg` and stops responding
+- three size steps plus default bold handle Chinese glyph smearing at 1080p/125% scaling
+- respects Windows "reduce motion" (`SPI_GETCLIENTAREAANIMATION` = `prefers-reduced-motion`)
 
 ---
 
@@ -399,15 +465,16 @@ measured at ~1.9s.
 python tests\test_selfcheck.py
 ```
 
-**306 checks, all green, no GPU needed.** Coverage:
+**317 checks, all green, no GPU needed.** Coverage:
 
 - i18n key-set integrity (Chinese and English keys must match one-to-one)
 - model DB loading / matching / graceful degradation on corruption
-- the four verdict states (unlocked / locked / unknown / relocked)
+- the four verdict states (unlocked / locked / unknown / relocked) and the **three-layer chain**
 - log freshness (`log_is_current_boot`)
 - HWiNFO shared-memory parsing (unit-tested on a synthetic buffer)
 - cross-reboot archives, `before/`+`after/` layout
 - clipboard DIB encoding (24-bit bottom-up, 4-byte row alignment)
+- **WCAG AA contrast** (18 pairs, both themes), easing monotonicity, **pt→px type conversion**, sound degradation
 - portable Python bootstrap, feedback widget state machine, self-execution guard
 - **core + ui use stdlib only** (dependency guard)
 
@@ -424,7 +491,8 @@ python tests\test_selfcheck.py
 5. **USB building formats the target drive** and needs two confirmations.
 6. **HWiNFO is an optional enhancement**; without it the refresh rate is NVML-limited (~1 Hz power).
 7. **Only the first GPU is judged.**
-8. Installing portable Python / torch requires network access.
+8. **Bold is on by default** (thin Chinese glyphs smear at 1080p scaling); switch to "regular" in the top bar.
+9. Installing portable Python / torch requires network access.
 
 ---
 

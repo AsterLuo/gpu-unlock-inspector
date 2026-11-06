@@ -49,7 +49,8 @@ def _diag(msg, dt=None):
 from core import theme as T
 from i18n.strings import Translator
 from ui.base import Button, Ctx, Segmented, rounded_rect
-from ui.dialogs import ConfirmType, Modal, OnboardDialog, ProgressDialog
+from ui.dialogs import (BasisDialog, ConfirmType, Modal, OnboardDialog,
+                        ProgressDialog)
 from ui.panels import (BenchCard, CrossBootCard, DetailCard, HeroPanel,
                      HistoryCard, OverviewCard, TflopsCard, UsbCard, fmt_bytes,
                      fmt_num)
@@ -70,7 +71,10 @@ class App(tk.Tk):
         self.db = modeldb.GpuDatabase()
         self.tr = Translator(self.store.get("lang", "zh"))
         self.theme_name = self.store.get("theme", "light")
-        self.ctx = Ctx(self.theme_name, self.tr, self._dpi_scale())
+        self.ctx = Ctx(self.theme_name, self.tr, self._dpi_scale(),
+                       weight_boost=bool(self.store.get("font_bold", T.BOLD_BY_DEFAULT)),
+                       size_boost=T.SIZE_BOOSTS.get(
+                           self.store.get("font_scale", "large"), 1.15))
         # 音效 / 动效：从设置恢复；动效还要看系统「减少动态效果」
         from ui import anim as _anim, sound as _sound
         _sound.set_enabled(bool(self.store.get("sound_on", False)))
@@ -315,6 +319,12 @@ class App(tk.Tk):
                                                        expand=True, pady=ctx.s(8))
 
     def _build_topbar(self):
+        """顶栏：品牌在左，设置组在右。
+
+        字号放大后一行放不下 7 个控件（实测 1360px 宽时会互相挤压），
+        所以设置组内部再分两行：上排是展示类（字号/加粗/语言），
+        下排是行为类（动效/音效/主题/刷新）。品牌区垂直居中。
+        """
         ctx = self.ctx
         for w in self.topbar.winfo_children():
             w.destroy()
@@ -323,7 +333,7 @@ class App(tk.Tk):
         bar.pack(fill="x", padx=pad, pady=(ctx.s(14), ctx.s(6)))
 
         brand = tk.Frame(bar, bg=ctx.c("bg"))
-        brand.pack(side="left")
+        brand.pack(side="left", anchor="n")
         dot = tk.Canvas(brand, bg=ctx.c("bg"), width=ctx.s(28), height=ctx.s(28),
                         bd=0, highlightthickness=0)
         dot.pack(side="left")
@@ -338,28 +348,51 @@ class App(tk.Tk):
                      fg=ctx.c("ink_faint"), font=ctx.font("small")).pack(side="left")
 
         right = tk.Frame(bar, bg=ctx.c("bg"))
-        right.pack(side="right")
-        Button(right, ctx, self.tr("top.refresh"), kind="ghost",
-               command=self.refresh_data, height=32).pack(side="right", padx=(ctx.s(8), 0))
-        Segmented(right, ctx, [("light", self.tr("top.theme.light")),
-                               ("dark", self.tr("top.theme.dark"))],
-                  self.theme_name, command=self.set_theme,
-                  bg_name="bg").pack(side="right", padx=(ctx.s(12), 0))
-        Segmented(right, ctx, [("zh", self.tr("top.lang.zh")), ("en", self.tr("top.lang.en"))],
-                  self.tr.lang, command=self.set_lang, bg_name="bg").pack(side="right")
-        # 音效 / 动效开关：默认都关，用户主动开才生效（不打扰、不自作主张）
-        self.sound_seg = Segmented(
-            right, ctx,
-            [("off", self.tr("top.sound.off")), ("on", self.tr("top.sound.on"))],
-            "on" if self.store.get("sound_on", False) else "off",
-            command=self.set_sound, bg_name="bg")
-        self.sound_seg.pack(side="right", padx=(ctx.s(12), 0))
+        right.pack(side="right", anchor="n")
+
+        # 上排：字号 / 加粗 / 语言 —— 都是「看得见」的显示设置
+        row1 = tk.Frame(right, bg=ctx.c("bg"))
+        row1.pack(anchor="e")
+        self.font_seg = Segmented(
+            row1, ctx,
+            [("normal", self.tr("top.font.sm")), ("large", self.tr("top.font.md")),
+             ("xlarge", self.tr("top.font.lg"))],
+            self.store.get("font_scale", "large"),
+            command=self.set_font, bg_name="bg")
+        self.font_seg.pack(side="left")
+        self.bold_seg = Segmented(
+            row1, ctx,
+            [("off", self.tr("top.bold.off")), ("on", self.tr("top.bold.on"))],
+            "on" if self.store.get("font_bold", T.BOLD_BY_DEFAULT) else "off",
+            command=self.set_bold, bg_name="bg")
+        self.bold_seg.pack(side="left", padx=(ctx.s(10), 0))
+        Segmented(row1, ctx,
+                  [("zh", self.tr("top.lang.zh")), ("en", self.tr("top.lang.en"))],
+                  self.tr.lang, command=self.set_lang,
+                  bg_name="bg").pack(side="left", padx=(ctx.s(10), 0))
+
+        # 下排：动效 / 音效 / 主题 / 刷新 —— 都是「动手」的行为设置
+        row2 = tk.Frame(right, bg=ctx.c("bg"))
+        row2.pack(anchor="e", pady=(ctx.s(6), 0))
         self.motion_seg = Segmented(
-            right, ctx,
+            row2, ctx,
             [("off", self.tr("top.motion.off")), ("on", self.tr("top.motion.on"))],
             "on" if self.store.get("motion_on", True) else "off",
             command=self.set_motion, bg_name="bg")
-        self.motion_seg.pack(side="right", padx=(ctx.s(12), 0))
+        self.motion_seg.pack(side="left")
+        self.sound_seg = Segmented(
+            row2, ctx,
+            [("off", self.tr("top.sound.off")), ("on", self.tr("top.sound.on"))],
+            "on" if self.store.get("sound_on", False) else "off",
+            command=self.set_sound, bg_name="bg")
+        self.sound_seg.pack(side="left", padx=(ctx.s(10), 0))
+        Segmented(row2, ctx, [("light", self.tr("top.theme.light")),
+                              ("dark", self.tr("top.theme.dark"))],
+                  self.theme_name, command=self.set_theme,
+                  bg_name="bg").pack(side="left", padx=(ctx.s(10), 0))
+        Button(row2, ctx, self.tr("top.refresh"), kind="ghost",
+               command=self.refresh_data, height=30).pack(side="left",
+                                                          padx=(ctx.s(10), 0))
 
     # ------------------------------------------------------------ 采集 / 判定
     def refresh_data(self):
@@ -612,7 +645,29 @@ class App(tk.Tk):
     def set_lang(self, lang):
         self.tr.set_lang(lang)
         self.store.set("lang", lang)
-        self.ctx = Ctx(self.theme_name, self.tr, self.ctx.scale)
+        self.ctx = self._make_ctx()
+        self._rebuild_everything()
+
+    def _make_ctx(self):
+        """用当前设置重建绘制上下文：主题 / 语言 / 字体三组设置都走这里。
+
+        字体两项（加粗、放大档）集中在此处读取，避免各处 Ctx() 调用漏掉设置。
+        """
+        return Ctx(self.theme_name, self.tr, self.ctx.scale,
+                   weight_boost=bool(self.store.get("font_bold", T.BOLD_BY_DEFAULT)),
+                   size_boost=T.SIZE_BOOSTS.get(
+                       self.store.get("font_scale", "large"), 1.15))
+
+    def set_font(self, value):
+        """字体档位：normal / large / xlarge。"""
+        self.store.set("font_scale", value)
+        self.ctx = self._make_ctx()
+        self._rebuild_everything()
+
+    def set_bold(self, value):
+        """字体加粗开关。"""
+        self.store.set("font_bold", value == "on")
+        self.ctx = self._make_ctx()
         self._rebuild_everything()
 
     def set_sound(self, value):
@@ -650,7 +705,7 @@ class App(tk.Tk):
                      lambda p: self.configure(bg=T.mix(old_bg, new_bg, p)))
         except Exception:
             pass
-        self.ctx = Ctx(self.theme_name, self.tr, self.ctx.scale)
+        self.ctx = self._make_ctx()
         self.configure(bg=self.ctx.c("bg"))
         self._rebuild_everything()
 
@@ -711,36 +766,22 @@ class App(tk.Tk):
 
     # ------------------------------------------------------------ 判定依据
     def show_basis(self):
-        lines = []
-        cv = getattr(self, "combined_verdict", None)
-        if cv:
-            lines.append("%-22s %s" % (self.tr("hero.status"),
-                                       self.tr("state." + cv["state"])))
-            lines.append("%-22s %s" % (self.tr("usb.verdict"),
-                                       self.tr("state." + (cv.get("log") or "unknown"))))
-            lines.append("%-22s %s" % (self.tr("tf.verdict"),
-                                       self.tr("tf.state." + (cv.get("tf") or "unknown"))))
-            if cv.get("note_key"):
-                lines.append("")
-                lines.append(self.tr(cv["note_key"]))
-            lines.append("")
-        if not self.verdict:
-            body = "\n".join(lines) if lines else self.tr("unlock.reason.nvml_fail")
-            Modal.tell(self, self.ctx, self.tr("unlock.basis"), body, self.tr("msg.ok"))
-            return
-        for r in self.verdict.rules:
-            lines.append("%-28s %s = %s  [%s]  %s" % (
-                self.tr(r.key), r.field or "-",
-                r.actual if r.actual is not None else "-",
-                r.threshold or "-",
-                self.tr("unlock." + ("hit" if r.verdict == "hit" else
-                                     "miss" if r.verdict == "miss" else "skip"))))
-        body = self.tr(self.verdict.reason_key) + "\n\n" + "\n".join(lines)
-        cv2 = getattr(self, "combined_verdict", None)
-        if cv2 and cv2.get("note_key"):
-            body += "\n\n" + self.tr(cv2["note_key"])
-        Modal.tell(self, self.ctx, self.tr("unlock.basis"), body, self.tr("msg.ok"))
+        """判定依据：展示当前真正生效的三层判定链。
 
+        旧实现列的是驱动推断时代的规则表（evaluate() 产出的那批 Rule），
+        自从判定改成「实测 TFLOPS 优先」后那几条一条都不参与结论，
+        继续显示会让人以为程序还在用驱动版本判解锁。现在只画实际生效的链路。
+        """
+        combined = getattr(self, "combined_verdict", None) or {}
+        ref = {}
+        try:
+            if self.entry:
+                ref = unlock.unlocked_reference(self.entry, self.db) or {}
+        except Exception:
+            traceback.print_exc()
+        dlg = BasisDialog(self, self.ctx, self.tr, combined, self.tf_summary,
+                          ref, self.entry, threshold=0.75)
+        dlg.show(self)
     # ------------------------------------------------------------ 深度诊断
     def run_deep_probe(self):
         exe = ssdiag.find_ssdiag(modeldb.app_dir(), modeldb.resource_root())

@@ -15,11 +15,14 @@ from core import theme as T
 class Ctx:
     """一次绘制所需的全部上下文：主题表 + 翻译函数 + 字体 + DPI 缩放。"""
 
-    def __init__(self, theme_name, tr, scale=1.0):
+    def __init__(self, theme_name, tr, scale=1.0, weight_boost=False, size_boost=1.0):
         self.theme_name = theme_name
         self.theme = T.THEMES.get(theme_name, T.THEMES["light"])
         self.tr = tr
         self.scale = scale
+        # 可读性开关：UI 上的「字体加粗 / 放大」两档，默认都打开
+        self.weight_boost = weight_boost
+        self.size_boost = size_boost
         self._fonts = {}
 
     def s(self, px):
@@ -27,15 +30,31 @@ class Ctx:
         return int(round(px * self.scale))
 
     def font(self, kind="body", bold=False):
+        """取字体。
+
+        关键修正（原实现有 24% 的尺寸误差）
+        -----------------------------------
+        T.FONTS 里的数值是**磅（pt）**——照 CSS 的 11pt/22pt 阶梯定义。
+        旧代码把它当成**像素**直接用（size=11），而 Tk 的 size 若为正数就是磅、
+        负数才是像素，于是 11pt 被渲染成了 11px ≈ 8.3pt，整体偏小 24%。
+        实测：small 应为 13px，实际只有 10px，行高 20px 而不是 27px —— 这就是
+        「有些字完全看不清」的根因。
+
+        现在统一换算：px = pt × 96/72（屏幕 96 DPI 基准），再乘 DPI 缩放与
+        用户选择的放大档，最后用**负值**告诉 Tk 这是像素尺寸。
+        """
         key = (kind, bold)
         if key in self._fonts:
             return self._fonts[key]
-        size = T.FONTS.get(kind, 11)
+        pt = T.FONTS.get(kind, 11)
+        px = pt * T.PT_TO_PX * self.scale * self.size_boost
         family = "Microsoft YaHei UI" if self.tr.lang == "zh" else "Segoe UI"
         if kind == "mono":
             family = "Consolas"
-        f = tkfont.Font(family=family, size=-self.s(size) if self.scale != 1.0 else size,
-                        weight="bold" if bold else "normal")
+        # 全量加粗：用户反馈「有些字完全看不清」，细体在 1080p 缩放屏上笔画会糊成一团。
+        # 统一 bold 后所有层级都清晰可辨，weight_boost=False 可一键回退。
+        f = tkfont.Font(family=family, size=-int(round(px)),
+                        weight="bold" if (bold or self.weight_boost) else "normal")
         self._fonts[key] = f
         return f
 

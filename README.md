@@ -7,10 +7,11 @@
 
 单文件便携 Windows 工具 · 免安装 · 免管理员权限 · 只读采集
 
-[![Release](https://img.shields.io/badge/release-v1.0.0-6c5ce7)](https://github.com/AsterLuo/gpu-unlock-inspector/releases/latest)
+[![Release](https://img.shields.io/badge/release-v1.1.0-6c5ce7)](https://github.com/AsterLuo/gpu-unlock-inspector/releases/latest)
 [![Platform](https://img.shields.io/badge/platform-Windows%2010%2F11-4a9eff)](https://github.com/AsterLuo/gpu-unlock-inspector/releases/latest)
 [![Python](https://img.shields.io/badge/python-3.10%2B-3776ab)](https://www.python.org/)
 [![License](https://img.shields.io/badge/license-MIT-2ee6a8)](https://github.com/AsterLuo/gpu-unlock-inspector/blob/main/LICENSE)
+[![Selfcheck](https://img.shields.io/badge/selfcheck-317%20passed-2ee6a8)](https://github.com/AsterLuo/gpu-unlock-inspector)
 
 [English](README.en.md) · **简体中文**
 
@@ -60,8 +61,8 @@ loader.log 只说明上一次引导成功过，不说明值还在。** 寄存器
 
 ### 用打包好的版本（推荐）
 
-1. 到 [Releases](https://github.com/AsterLuo/gpu-unlock-inspector/releases/latest) 下载 `GPUUnlockInspector-v1.0.0-win64.zip`
-2. 解压到任意目录（**别放 C:\Program Files**，配置与日志写在 exe 同目录）
+1. 到 [Releases](https://github.com/AsterLuo/gpu-unlock-inspector/releases/latest) 下载 `GPUUnlockInspector-v1.1.0-win64.zip`
+2. 解压到任意目录（**别放 `C:\Program Files`**，配置与日志写在 exe 同目录）
 3. 双击 `GPUUnlockInspector.exe`
 
 首屏直接给结论：**解锁状态 + 距离解锁还差多少**。
@@ -101,6 +102,17 @@ python src\main.py
 | `self_ratio`（兜底） | 没有参考值时，用 FP16+FP32acc ÷ FP16+FP16acc | 全速对照路径从未被锁 |
 
 `self_ratio` 阈值：`< 0.65` 锁定、`> 0.85` 解锁、中间无法判定。
+
+### 三层判定链（「查看判定依据」看的就是这个）
+
+| 层 | 判据 | 权重 |
+| --- | --- | --- |
+| ① 实测算力 | TFLOPS vs 型号参考值 × 0.75 | **硬否决**——实测不达标即判未解锁，后两层不再翻案 |
+| ② 本次开机 `loader.log` | 日志结论 + 时效（`mtime >= boot - 120s`） | 佐证；与实测算力冲突时被推翻 |
+| ③ 驱动版本推断 | LHR 移除版本（≥ 516.94） | **兜底**，只在前两层都拿不到时使用 |
+
+弹窗里每一层都标注「生效 / 被推翻 / 未参与」，并给出该层的具体数字（比例、日志时间、设备 ID），
+不做黑箱结论。底层实现见 `core/unlock.py`，**判定逻辑与界面解耦**，UI 改版不影响判据。
 
 ### 两个维度的「解锁」，别混淆
 
@@ -154,12 +166,12 @@ U 盘上的 `loader.log` 记录的是**上一次引导**的结果，不能证明
 
 | 区块 | 内容 |
 | --- | --- |
-| **首屏结论** | 状态徽章（已解锁 / 解锁中 / 未解锁 / 无法判定）+ 算力提升百分比 + 型号/架构/驱动/VBIOS |
+| **首屏结论** | 状态徽章（已解锁 / 解锁中 / 未解锁 / 无法判定）+ 算力提升百分比 + 当前算力 + 型号/架构/驱动/VBIOS + 两枚入口按钮 |
 | **硬件概览** | 当前功耗、温度、风扇转速、GPU 占用、显存占用、功耗上限、CUDA 核心、SM 数、制程、TDP、显存类型、位宽、带宽、核心频率、PCIe 链路 |
 | **详细参数** | 逐字段原始读数，每项标注来源（NVML 直连 / nvidia-smi / WMI 降级 / 型号库） |
 
 **首屏三态**：刚打开还没跑实测时徽章显示「待检测」（中性灰），跑完才算数——
-驱动版本推断只写进「查看判定依据」表，不冒充检测结论。
+驱动版本推断只写进判定依据弹窗，不冒充检测结论。
 徽章下面那个数字：没实测显示「当前算力 —」；有实测无解锁前存档显示「当前算力 xx TFLOPS」；
 两边都有才显示「较解锁前 ±x.x%」（**正负照实**，负值用红色）。
 
@@ -191,11 +203,24 @@ U 盘上的 `loader.log` 记录的是**上一次引导**的结果，不能证明
 | 下载便携 Python / 安装 torch | 真实百分比（解析 Content-Length / pip 进度条） |
 | 扫描 U 盘 / 刷新显卡信息 / 制作 U 盘 | spinner（无法预估） |
 
-![运行中](docs/images/08-running.png)
+### ③ 判定依据（三层链弹窗）
 
-### ③ 引导 U 盘
+| 未解锁 | 已解锁 |
+| --- | --- |
+| ![判定依据-锁定](docs/images/06-basis-locked.png) | ![判定依据-解锁](docs/images/07-basis-unlocked.png) |
 
-![引导 U 盘](docs/images/05-usb.png)
+点首屏的「查看判定依据」打开。这个弹窗在 v1.1 被整个重写：旧版直接把早期「驱动版本推断」
+时代的规则表（LHR 移除版本 / LHR 设备 ID / 显存频率 / 功耗）原样列出来，
+而自从判定改成「实测 TFLOPS 优先」后，那几条一条都不参与最终结论——
+真实判据反倒不显示。现在只展示**当前真正生效**的三层链，并逐层标注状态。
+
+举例（左图）：实测 32.8 / 77 TFLOPS 只有 **43%**，判「未解锁」；
+而本次开机 `loader.log` 说的是「已解锁」，于是被实测**推翻**；
+驱动推断层「未参与」。底部一句话解释为什么日志说解锁、实测却是锁的。
+
+### ④ 引导 U 盘
+
+![引导 U 盘](docs/images/03-usb.png)
 
 自动识别解锁引导盘并读取其 `loader.log`：
 
@@ -214,9 +239,9 @@ RTX 50 系、GA100、Pascal 及更早明确拒绝（参考项目未适配）。
 **制作需两次确认**：第一次列出将被格式化的盘与容量，第二次要求手打盘符字母。
 资产不内置，按需从参考项目拉取（约 81 MB，含 maker 与固件）。
 
-### ④ 跨重启对比
+### ⑤ 跨重启对比
 
-![跨重启对比](docs/images/03-crossboot.png)
+![跨重启对比](docs/images/04-crossboot.png)
 
 解锁是 U 盘引导在 UEFI 预驱动阶段完成的，**Windows 运行中无法热解锁**，所以前后对比必须跨重启：
 
@@ -227,7 +252,7 @@ RTX 50 系、GA100、Pascal 及更早明确拒绝（参考项目未适配）。
 | ③ 第 2 次开机（已解锁） | 再跑一次 → 点**存为解锁后** |
 | ④ 自动配对 | 给出**算力**与**基准**双对比（两路并排，各自算各自的提升百分比） |
 
-![跨重启详情](docs/images/04-crossboot-detail.png)
+![跨重启详情](docs/images/05-history.png)
 
 一次点击存的是**整个板块的两个测试**（算力实测 6 项 TFLOPS + 基准测试曲线与指标），合成一个 JSON，
 按解锁前后分两个子文件夹：
@@ -254,19 +279,21 @@ RTX 50 系、GA100、Pascal 及更早明确拒绝（参考项目未适配）。
 
 截图走纯 Win32（BitBlt + `CF_DIB`），不依赖 Pillow；同时在 exe 同目录留一份 PNG 备份。
 
-### ⑤ 深浅双主题
+### ⑥ 测量记录
+
+![测量记录](docs/images/05-history.png)
+
+每次保存的测试都进台账（时间 / 类型 / 平均 / 峰值 / 提升），单条可删，也可整表清空。
+
+### ⑦ 深浅双主题
 
 | 深色 | 浅色 |
 | --- | --- |
-| ![深色](docs/images/06-dark.png) | ![浅色](docs/images/07-light.png) |
+| ![深色](docs/images/08-dark.png) | ![浅色](docs/images/10-hero-unlocked.png) |
 
-顶栏可切换 **中文 / English**、**深 / 浅**、**动效开/关**、**音效开/关**。
+深色下的判定依据弹窗同样重算过对比度：
 
-### ⑥ 引导弹窗与进度
-
-| 缺环境 | 安装进度 | 通用进度 |
-| --- | --- | --- |
-| ![缺环境](docs/images/10-install-prompt.png) | ![安装](docs/images/09-install-dialog.png) | ![进度](docs/images/11-progress-dialog.png) |
+![深色判定依据](docs/images/09-basis-dark.png)
 
 ---
 
@@ -306,7 +333,7 @@ UI 会标明本次数据来自哪个引擎（首屏两处 + 算力实测卡头�
 ### 颜色与对比度
 
 浅色/深色两套令牌，全部前景/背景组合都实测 **≥ 4.5:1**（WCAG AA 正文标准），
-由 `tests/test_selfcheck.py::test_a11y_and_tokens` 持续校验。
+由 `tests/test_selfcheck.py::test_a11y_and_tokens` 持续校验（两主题 18 组）。
 
 | 令牌 | 浅色 | 对比度 | 深色 | 对比度 |
 | --- | --- | ---: | --- | ---: |
@@ -317,6 +344,34 @@ UI 会标明本次数据来自哪个引擎（首屏两处 + 算力实测卡头�
 | `ok` 成功 | #107a58 | 5.3 | #2ee6a8 | 10.8 |
 | `warn` 警告 | #9c5a00 | 5.4 | #f5b545 | 9.7 |
 | `bad` 错误 | #c62828 | 5.6 | #ff6b6f | 6.3 |
+
+### 字号与字重（v1.1 的重要修正）
+
+`FONTS` 里的数值单位是**磅（pt）**，渲染时按 `px = pt × 96/72 × DPI × 放大档` 换算，
+再以**负值**传给 Tk（Tk 的 size 为负才是像素，为正会被当成磅）。
+
+这层换算曾经缺失：整套字号被当成像素渲染，实际只有设计值的 76%，
+`small` 应为 13px 却只有 10px——这就是「有些字完全看不清」的真正原因。
+
+| 令牌 | pt | 像素（96 DPI · 大档 1.15） | 用途 |
+| --- | --- | --- | --- |
+| `display` / `metric` | 30 / 34 | 46 / 52 | 首屏结论 |
+| `h1` / `h2` / `h3` | 22 / 16 / 13 | 34 / 25 / 20 | 卡片标题梯队 |
+| `body` / `small` | 11 / 10 | 17 / 15 | 正文 / 辅助 |
+| `mono` | 10 | 15 | 等宽数值 |
+
+放大档：`normal` 1.0 / `large` 1.15（默认）/ `xlarge` 1.3。
+**字体默认全量加粗**（`BOLD_BY_DEFAULT`）——细体中文在 1080p 缩放下笔画会糊，
+顶栏「常规 / 加粗」可一键回退。
+
+> 顶栏在字号放大后单行放不下 7 个控件（实测 1360px 宽时互相挤压），
+> 已拆成两排：上排「字号 / 字重 / 语言」是显示设置，下排「动效 / 音效 / 主题 / 刷新」是行为设置。
+
+### 表格列宽
+
+算力实测表的四列（测试项 / 锁定区间 / 本次实测 / 判定）改用 `grid` 的 `weight` 按比例分配，
+不再用 `Label(width=N)`——Tk 的 width 单位是**字符数**，字号一放大四列累加就超过卡片宽度，
+最后一列会被裁掉（实测「无法判定」曾被截成「无法判…」）。
 
 ### 动效令牌
 
@@ -355,9 +410,14 @@ UI 会标明本次数据来自哪个引擎（首屏两处 + 算力实测卡头�
 | `md` 以上 | ≥ 1080px | 双栏并排（概览/详情、算力/基准） |
 | `md` 以下 | 880–1079px | 单栏纵向堆叠 |
 
+窗口 `minsize` 定为 **880×640** —— 必须低于 `md` 断点 1080，否则单栏布局永远不可达
+（历史 bug：minsize 曾等于断点值）。
+
 - 所有按钮 `takefocus=1`，`Tab` 可达，`Space`/`Enter` 等价点击
 - 焦点态画 2px `focus_ring` 环，四态（normal/hover/active/disabled）视觉可区分
 - 禁用态 `cursor=arrow` + `disabled_fg` + 不再响应事件
+- 字号三档 + 默认加粗，应对 1080p/125% 缩放下的中文笔画糊化
+- 尊重系统「减少动态效果」（`SPI_GETCLIENTAREAANIMATION` = `prefers-reduced-motion`）
 
 ---
 
@@ -380,15 +440,16 @@ build.bat
 python tests\test_selfcheck.py
 ```
 
-**306 项全绿，无 GPU 也能跑。** 覆盖：
+**317 项全绿，无 GPU 也能跑。** 覆盖：
 
 - i18n 键集完整性（中英键必须一一对应）
 - 型号库加载 / 匹配 / 损毁降级
-- 判定四态（unlocked / locked / unknown / relocked）
+- 判定四态（unlocked / locked / unknown / relocked）与**判定依据三层链**
 - 日志时效（`log_is_current_boot`）
 - HWiNFO 共享内存解析（合成 buffer 单测）
 - 跨重启存档、before/after 双文件夹布局
 - 剪贴板 DIB 编码（24 位自底向上、行 4 字节对齐）
+- **WCAG AA 对比度**（两主题 18 组）、动效缓动单调性、**字体 pt→px 换算**、音效降级
 - 便携 Python 自举、反馈组件状态机、自执行防护
 - **core + ui 只用标准库**（依赖守卫）
 
@@ -403,7 +464,8 @@ python tests\test_selfcheck.py
 5. **U 盘制作会格式化目标盘**，需两次确认。
 6. **HWiNFO 是可选增强**，未安装时刷新率受 NVML 限制（功耗约 1 Hz）。
 7. **目前只判第一张显卡**。
-8. 便携 Python / torch 安装需要联网。
+8. **字体默认全量加粗**（细体中文在 1080p 缩放下会糊）；想回轻量观感点顶栏「常规」。
+9. 便携 Python / torch 安装需要联网。
 
 ---
 

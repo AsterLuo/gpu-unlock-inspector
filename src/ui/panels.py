@@ -850,6 +850,19 @@ class CrossBootCard(Card):
         self.b_snap.set_text(tr("xboot.snap"))
         self.note.configure(text=tr("xboot.note"))
 # ===================================================================== Tensor 算力实测
+def _grid_cols(frame, weights=(6, 3, 3, 4)):
+    """给表格行/表头设统一的列权重。
+
+    为什么不用 Label(width=N)
+    -------------------------
+    Tk 的 width 单位是**字符数**，字号一放大，四列累加就超过卡片宽度，
+    最后一列（判定）直接被裁掉 —— 实测 1360px 宽 + 大字号时「无法判定」被截成「无法判…」。
+    用 grid 的 weight 按比例分配，宽度永远贴合卡片。
+    """
+    for i, w in enumerate(weights):
+        frame.columnconfigure(i, weight=w, uniform="tfcol" if i else "")
+
+
 class TflopsCard(Card):
     """复刻参考图：测试项 / 锁定态区间 / 本次实测 / 判定。"""
 
@@ -1030,12 +1043,16 @@ class TflopsCard(Card):
         for widget in self.table.winfo_children():
             widget.destroy()
 
+        # 表头与数据行共用同一套列权重：字号放大后按比例分宽度，
+        # 不会像固定 width(字符数) 那样把最后一列挤出卡片。
         header = tk.Frame(self.table, bg=ctx.c("card"))
         header.pack(fill="x", pady=(0, ctx.s(6)))
-        for key, width in (("tf.case", 26), ("tf.locked_band", 15),
-                           ("tf.measured", 13), ("tf.verdict", 12)):
+        _grid_cols(header)
+        for col, key in enumerate(("tf.case", "tf.locked_band",
+                                   "tf.measured", "tf.verdict")):
             tk.Label(header, text=tr(key), bg=ctx.c("card"), fg=ctx.c("ink_faint"),
-                     font=ctx.font("small"), width=width, anchor="w").pack(side="left")
+                     font=ctx.font("small"), anchor="w").grid(
+                row=0, column=col, sticky="w")
 
         if not summary:
             tk.Label(self.table, text=tr("tf.need_run"), bg=ctx.c("card"),
@@ -1076,20 +1093,27 @@ class TflopsCard(Card):
             row_bg = ctx.c("accent_soft") if row["control"] else ctx.c("card")
             line = tk.Frame(self.table, bg=row_bg)
             line.pack(fill="x", pady=(0, ctx.s(3)))
+            _grid_cols(line)
             tk.Label(line, text=tr(row["label_key"]), bg=row_bg, fg=ctx.c("ink"),
-                     font=ctx.font("small"), width=26, anchor="w").pack(side="left")
+                     font=ctx.font("small"), anchor="w").grid(
+                row=0, column=0, sticky="w")
             tk.Label(line, text=band_txt, bg=row_bg, fg=ctx.c("ink_faint"),
-                     font=ctx.font("mono"), width=15, anchor="w").pack(side="left")
+                     font=ctx.font("mono"), anchor="w").grid(
+                row=0, column=1, sticky="w")
             tk.Label(line, text=("%.1f" % tflops) if tflops is not None else "—",
                      bg=row_bg, fg=ctx.c("ink"), font=ctx.font("small", bold=True),
-                     width=13, anchor="w").pack(side="left")
+                     anchor="e").grid(row=0, column=2, sticky="e")
             mark = "\u2713 " if state in ("unlocked", "na") else "\u2717 "
             tk.Label(line, text=mark + state_txt, bg=row_bg, fg=fg,
-                     font=ctx.font("small", bold=True), width=12,
-                     anchor="w").pack(side="left")
+                     font=ctx.font("small", bold=True), anchor="w").grid(
+                row=0, column=3, sticky="w", padx=(ctx.s(8), 0))
             if row["control"]:
-                tk.Label(line, text=tr("tf.control"), bg=row_bg, fg=ctx.c("ink_faint"),
-                         font=ctx.font("small")).pack(side="left", padx=(ctx.s(6), 0))
+                # 同一容器里已经用 grid 了，这里必须也走 grid，不能混用 pack。
+                # 挂到判定列右侧（column=3 的 sticky=w 后面），不再单开一列，
+                # 否则那列没有 weight 会被挤到下一行。
+                tk.Label(line, text=tr("tf.control"), bg=row_bg,
+                         fg=ctx.c("ink_faint"), font=ctx.font("small")).grid(
+                    row=0, column=3, sticky="w", padx=(ctx.s(84), 0))
 
         ratio = (analysis or {}).get("ratio")
         if ratio is None:

@@ -485,3 +485,199 @@ class OnboardDialog(BaseDialog):
             self.after(50, self._animate)
         except tk.TclError:
             pass
+
+
+class BasisDialog(BaseDialog):
+    """判定依据：只展示当前真正生效的三层判定链。
+
+    为什么重做
+    ----------
+    旧版直接把 verdict.rules 原样列出来 —— 那是早期「驱动版本推断」时代的规则表
+    （LHR 移除版本 / LHR 设备 ID / 显存频率 / 功耗）。自从判定改成「实测 TFLOPS 优先」，
+    这几条一条都不参与最终结论，可它们仍被画在最显眼的位置，
+    真实判据（实测 vs 型号库参考值 × 0.75）反倒不显示。
+
+    现在的结构对应 unlock.verdict_now() 的实际优先级：
+      ① 实测算力（judge_by_compute）—— 硬否决
+      ② 本次开机 loader.log        —— 佐证
+      ③ 驱动版本推断               —— 仅在前两者都缺失时兜底
+    每一层都标出「生效 / 未生效 / 被否决」，用户一眼能看出谁决定了结论。
+    """
+
+    def __init__(self, master, ctx, tr, combined, tflops_summary,
+                 unlocked_ref, entry, threshold=0.75, width=560):
+        super().__init__(master, ctx, tr("unlock.basis"), width)
+        self.tr = tr
+        pad = ctx.s(22)
+        self.add_title(tr("unlock.basis"), tr("basis.sub"))
+        # 标题文字很短，Tk 会按文字宽度把窗口压窄。这里先钉住内容区宽度，
+        # 后面所有行都在这个宽度里做左右两端对齐。
+        tk.Frame(self.frame, bg=ctx.c("card"), height=ctx.s(1),
+                 width=self._dw - pad * 2).pack(fill="x")
+
+        body = tk.Frame(self.frame, bg=ctx.c("card"))
+        body.pack(fill="both", expand=True, padx=pad)
+
+        # ---- 结论条
+        state = (combined or {}).get("state") or "unknown"
+        fg, bg = T.state_color(ctx.theme, state)
+        bar = tk.Canvas(body, bg=ctx.c("card"), bd=0, highlightthickness=0,
+                        height=ctx.s(46))
+        bar.pack(fill="x", pady=(0, ctx.s(12)))
+        bar.bind("<Configure>",
+                 lambda e, c=bar, s=state, f=fg, b=bg: self._paint_bar(
+                     c, s, f, b, ctx, tr))
+
+        # ---- 三层判定链
+        self._chain(body, ctx, pad, combined, tflops_summary, unlocked_ref,
+                    entry, threshold)
+
+        # ---- 备注（仲裁说明）
+        note_key = (combined or {}).get("note_key")
+        if note_key:
+            tk.Label(body, text=tr(note_key), bg=ctx.c("card"), fg=ctx.c("ink_soft"),
+                     font=ctx.font("small"), anchor="w", justify="left",
+                     wraplength=self._dw - pad * 2).pack(fill="x",
+                                                         pady=(ctx.s(10), 0))
+
+        self.add_buttons([(tr("msg.ok"), True, "solid")])
+
+    def _paint_bar(self, canvas, state, fg, bg, ctx, tr):
+        w = canvas.winfo_width()
+        h = canvas.winfo_height()
+        canvas.delete("all")
+        if w < 20 or h < 20:
+            return
+        rounded_rect(canvas, 0, 0, w, h, ctx.s(12), fill=bg, outline="")
+        canvas.create_text(w / 2, h / 2, text=tr("state." + state), fill=fg,
+                           font=ctx.font("h2", bold=True))
+
+    def _section(self, parent, ctx, index, title, active, why):
+        """一节 = 序号圆点 + 标题 + 生效状态。返回可往里塞明细的容器。"""
+        row = tk.Frame(parent, bg=ctx.c("card"))
+        row.pack(fill="x", pady=(ctx.s(10), ctx.s(2)))
+
+        dot = tk.Canvas(row, bg=ctx.c("card"), width=ctx.s(20), height=ctx.s(20),
+                        bd=0, highlightthickness=0)
+        dot.pack(side="left")
+        tone = "ok" if active == "on" else ("warn" if active == "veto" else "chip_bg")
+        rounded_rect(dot, 0, 0, ctx.s(20), ctx.s(20), ctx.s(10),
+                     fill=ctx.c(tone) if tone != "chip_bg" else ctx.c("chip_bg"),
+                     outline="")
+        dot.create_text(ctx.s(10), ctx.s(10), text=index,
+                        fill=ctx.c("card") if tone != "chip_bg" else ctx.c("ink_faint"),
+                        font=ctx.font("small", bold=True))
+
+        tk.Label(row, text=title, bg=ctx.c("card"), fg=ctx.c("ink"),
+                 font=ctx.font("body", bold=True), anchor="w").pack(
+            side="left", padx=(ctx.s(8), 0))
+        tag = {"on": "basis.tag.on", "veto": "basis.tag.veto",
+               "off": "basis.tag.off"}.get(active, "basis.tag.off")
+        tk.Label(row, text=self.tr(tag), bg=ctx.c("card"),
+                 fg=(ctx.c("ok") if active == "on" else
+                     ctx.c("warn") if active == "veto" else ctx.c("ink_faint")),
+                 font=ctx.font("small", bold=True)).pack(side="left",
+                                                          padx=(ctx.s(8), 0))
+        if why:
+            tk.Label(row, text=why, bg=ctx.c("card"), fg=ctx.c("ink_faint"),
+                     font=ctx.font("small")).pack(side="left",
+                                                 padx=(ctx.s(8), 0))
+
+        box = tk.Frame(parent, bg=ctx.c("card"))
+        box.pack(fill="x", padx=(ctx.s(28), 0))
+        return box
+
+    def _line(self, parent, ctx, left, right, tone="ink"):
+        """左标签 + 右数值，两端对齐。
+
+        用 grid 而不是 pack(side=...)：pack 的左右两段会互相挤压，
+        标签长一点就把右侧数值顶成换行或重叠（实测踩到过）。
+        grid 的 column 1 有 weight，中间的空隙会把两者自然拉开。
+        """
+        r = tk.Frame(parent, bg=ctx.c("card"))
+        r.pack(fill="x", pady=ctx.s(1))
+        r.columnconfigure(1, weight=1)
+        tk.Label(r, text=left, bg=ctx.c("card"), fg=ctx.c("ink_soft"),
+                 font=ctx.font("small"), anchor="w").grid(row=0, column=0, sticky="w")
+        tk.Label(r, text=right, bg=ctx.c("card"), fg=ctx.c(tone),
+                 font=ctx.font("mono"), anchor="e").grid(row=0, column=2, sticky="e")
+
+    def _chain(self, body, ctx, pad, combined, tflops_summary, unlocked_ref,
+               entry, threshold):
+        tr = self.tr
+        cv = combined or {}
+        tf_state = cv.get("tf")
+        log_state = cv.get("log")
+        final = cv.get("state")
+
+        # ---------------- ① 实测算力
+        rows = tflops_summary or []
+        measured = [r for r in rows if r.get("tflops")]
+        if not measured:
+            box = self._section(body, ctx, "1", tr("basis.l1"), "off",
+                                tr("basis.l1.none"))
+            self._line(box, ctx, tr("basis.measured"), tr("basis.not_run"),
+                       "ink_faint")
+        else:
+            active = "on" if tf_state in ("locked", "unlocked") else "off"
+            why = tr("basis.l1.key") if tf_state == "locked" else ""
+            box = self._section(body, ctx, "1", tr("basis.l1"), active, why)
+            ref = unlocked_ref or {}
+            worst_ratio = None
+            for r in measured:
+                key = r.get("key")
+                val = float(r["tflops"])
+                band = ref.get(key)
+                lo = None
+                if band:
+                    lo = band[0] if isinstance(band, (list, tuple)) else band
+                if lo:
+                    ratio = val / float(lo)
+                    if worst_ratio is None or ratio < worst_ratio:
+                        worst_ratio = ratio
+                    tone = "ok" if ratio >= threshold else "bad"
+                    self._line(box, ctx,
+                               ("%-20s %6.1f / %.0f") % (tr("case." + key),
+                                                          val, lo),
+                               "%3.0f%%" % (ratio * 100), tone)
+                else:
+                    self._line(box, ctx, ("%-20s %6.1f") % (tr("case." + key), val),
+                               tr("basis.no_ref"), "ink_faint")
+            if worst_ratio is not None:
+                self._line(box, ctx,
+                           tr("basis.threshold_fmt").replace(
+                               "{p}", "%.0f%%" % (threshold * 100)),
+                           "%.0f%% %s" % (worst_ratio * 100,
+                                          tr("basis.pass") if worst_ratio >= threshold
+                                          else tr("basis.fail")),
+                           "ok" if worst_ratio >= threshold else "bad")
+
+        # ---------------- ② 本次开机日志
+        if log_state in ("unlocked", "locked"):
+            box = self._section(body, ctx, "2", tr("basis.l2"),
+                                "on" if final == log_state else "veto", "")
+            self._line(box, ctx, tr("basis.log_state"),
+                       tr("state." + log_state),
+                       "ok" if log_state == "unlocked" else "warn")
+            self._line(box, ctx, tr("basis.log_boot"), tr("basis.log_same_boot"))
+        else:
+            box = self._section(body, ctx, "2", tr("basis.l2"), "off",
+                                tr("basis.l2.none"))
+            self._line(box, ctx, tr("basis.log_state"), tr("basis.no_log"),
+                       "ink_faint")
+
+        # ---------------- ③ 驱动推断（兜底）
+        driver = cv.get("driver")
+        if driver in ("unlocked", "locked"):
+            # 有驱动推断结果，但前两层已定论 → 它只是备而未用
+            box = self._section(body, ctx, "3", tr("basis.l3"), "off",
+                                tr("basis.l3.fallback"))
+            self._line(box, ctx, tr("basis.driver_state"),
+                       tr("state." + driver), "ink_soft")
+        else:
+            box = self._section(body, ctx, "3", tr("basis.l3"), "off",
+                                tr("basis.l3.skipped"))
+            # 这里是「这一层没有给出结论」，不是「结论是无法判定」——
+            # 后者读起来像最终判定失败，会误导。
+            self._line(box, ctx, tr("basis.driver_state"),
+                       tr("basis.no_conclusion"), "ink_faint")

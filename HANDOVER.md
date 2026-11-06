@@ -37,6 +37,21 @@
 
 `self_ratio` 阈值：`<0.65` 锁定、`>0.85` 解锁、中间无法判定。
 
+### 三层链与「判定依据」对话框
+
+`verdict_now()` 的优先级是硬性的，UI 上点「查看判定依据」看到的就是这条链：
+
+| 层 | 证据 | 权重 | 界面标注 |
+| --- | --- | --- | --- |
+| ① | 实测算力（`judge_by_compute`） | **硬否决**：不达标一律判未解锁 | 生效 / 未参与 |
+| ② | 本次开机 `loader.log` | 佐证；与实测冲突时被推翻 | 生效 / **被推翻** / 未参与 |
+| ③ | 驱动版本推断（`evaluate().rules`） | 仅在前两层都缺失时兜底 | 未参与 |
+
+> ⚠️ **第 ③ 层的那批 Rule（LHR 移除版本 / LHR 设备 ID / 显存频率 / 功耗余量）
+> 已经不是主判据**。历史版本把这张表直接铺在对话框里，导致四条全是「跳过」、
+> 真正决定结论的「实测 / 参考值」反而不显示。现在对话框只画 ①②③ 三层并标状态，
+> `verdict.rules` 仅保留在导出报告与日志里（那是原始记录，属数据完整性）。
+
 ### 参考值怎么来的（别乱改）
 
 公式来自 nv-uefi-unlocker 的 `docs/theoretical-uplift.md §6`：
@@ -137,6 +152,7 @@ src/
 │  ├─ assets_fetch.py  从参考项目拉资产
 │  ├─ archive.py       ★ 跨重启存档（before/ after/ 双文件夹，一份文件含两个测试）
 │  ├─ clipimg.py       ★ 纯 ctypes 抓屏 → CF_DIB 剪贴板（不依赖 Pillow）
+│  ├─ theme.py         ★ 设计令牌（颜色/字号/间距/动效/缓动/音效/断点）+ cubic_bezier
 │  ├─ log.py           ★ 统一日志
 │  └─ storage.py       配置/记录持久化
 ├─ i18n/strings.py     中英全量文案（UI 零硬编码）
@@ -144,14 +160,40 @@ src/
    ├─ app.py           主窗口 + 全部事件
    ├─ panels.py        各业务卡片（HeroPanel / OverviewCard / DetailCard / TflopsCard /
    │                   BenchCard / UsbCard / CrossBootCard / HistoryCard）
-   ├─ base.py          组件（Card / Button / Badge / Sparkline）
+   ├─ base.py          ★ 组件（Ctx 字体换算 / Card / Button 四态 / Badge / Sparkline）
    ├─ busy.py          ★ 统一忙碌反馈（Spinner / StatusLine）
-   ├─ anim.py          动效（渐显 / 数字滚动 / 脉冲）
-   ├─ dialogs.py       ★ 弹窗（居中 + 分情况进度条 + 首启动引导）
+   ├─ anim.py          ★ 动效引擎（cubic-bezier 补间 / 可全局关闭 / 减动效）
+   ├─ sound.py         ★ 交互音效（现场合成 WAV → Win32 PlaySound，零依赖）
+   ├─ dialogs.py       ★ 弹窗（居中 + 分情况进度条 + 首启动引导 + 判定依据三层链）
    └─ scroll.py        整页滚动
 ```
 
 带 ★ 的是判定与反馈核心，改动前先读对应注释。
+
+### 6.1 UI 层三条铁律（改界面前必读）
+
+1. **字体只能通过 `ctx.font(kind, bold=False)` 取。**
+   `theme.FONTS` 的值是**磅**，`Ctx.font()` 负责 `px = pt × 96/72 × DPI × 放大档`
+   并转成负值交给 Tk。直接写 `tkfont.Font(size=11)` 会得到 11 **磅**（≈15px 的另一套口径），
+   与设计阶梯对不上。
+2. **改绘制上下文只能走 `App._make_ctx()`。**
+   主题 / 语言 / 字体加粗 / 字号档 四项设置都在这里读取。
+   历史上 `set_lang` 与 `set_theme` 各自 `Ctx(...)`，新增字体参数后必然漏掉一处；
+   自检 `ctx built through one helper` 会拦住直接构造。
+3. **一个容器只能用一种几何管理器。**
+   `pack` 与 `grid` 混用会抛 `TclError: already has slaves managed by grid`。
+   表格类布局统一用 `grid` + `columnconfigure(weight=)`；`Label(width=N)` 的 N 是
+   **字符数**不是像素，字号一放大就会把最后一列挤出卡片。
+
+### 6.2 字体与配色改动后的验收动作
+
+| 动作 | 命令 / 位置 |
+| --- | --- |
+| 对比度全量复核 | `python tests\test_selfcheck.py`（`test_a11y_and_tokens`，两主题 18 组） |
+| 字号换算复核 | 同上（`pt to px conversion present` / `font uses negative size`） |
+| 三档字号肉眼验收 | 顶栏「标准 / 大 / 特大」逐档切换，看顶栏是否挤、表格判定列是否被裁 |
+| 加粗回退 | 顶栏「常规」切一次，确认无排版塌陷 |
+| 减动效 | Windows 设置 → 辅助功能 → 视觉效果 → 动画效果关闭，确认过渡全部即时 |
 
 ---
 
@@ -161,7 +203,7 @@ src/
 build.bat
 ```
 
-要求 Python 3.10+（带 tkinter 的官方发行版）。产物 `dist/GPUUnlockInspector.exe`（约 18.7 MB）。
+要求 Python 3.10+（带 tkinter 的官方发行版）。产物 `dist/GPUUnlockInspector.exe`（约 19.0 MB）。
 
 自检：
 
@@ -169,9 +211,10 @@ build.bat
 python tests\test_selfcheck.py
 ```
 
-306 项，覆盖 i18n 键集、型号库、判定四态、日志时效、HWiNFO 解析、跨重启存档、
-before/after 双文件夹存档、剪贴板 DIB 编码、
-便携 Python 自举、反馈组件状态机、自执行防护。**无 GPU 也能跑**。
+317 项，覆盖 i18n 键集、型号库、判定四态、日志时效、HWiNFO 解析、跨重启存档、
+before/after 双文件夹存档、剪贴板 DIB 编码、WCAG AA 对比度、动效缓动单调性、
+字体 pt→px 换算、音效降级、便携 Python 自举、反馈组件状态机、自执行防护。
+**无 GPU 也能跑**；字体与配色部分不依赖窗口也能验。
 
 ---
 
@@ -185,6 +228,8 @@ before/after 双文件夹存档、剪贴板 DIB 编码、
 4. **未收录型号**判「无法判定」，可手动选型号看参考数据（置信度封顶「中」）。
 5. **U 盘制作会格式化目标盘**，需两次确认（第一次列清单、第二次手打盘符）。
 6. **HWiNFO 是可选增强**，未安装时刷新率受 NVML 限制（功耗约 1 Hz）。
+7. **字体默认全量加粗**。细体中文在 1080p/125% 缩放下笔画会糊，所以 `BOLD_BY_DEFAULT = True`；
+   不在乎可读性、想回到轻量观感时切顶栏「常规」即可（不重建窗口，只是重绘）。
 
 ---
 
@@ -206,6 +251,12 @@ before/after 双文件夹存档、剪贴板 DIB 编码、
 | 写盘同步跑在主线程 | 窗口假死、点不动 | 后台线程 + `queue` + `after` 轮询 |
 | 剪贴板只写 CF_BITMAP | 部分程序粘贴空白 | 写 CF_DIB(8)，24 位自底向上、行 4 字节对齐 |
 | `SetClipboardData` 后再 GlobalFree | 偶发崩溃 | 成功后所有权归系统，不能再释放 |
+| `tkfont.Font(size=11)` 当像素用 | 全套字号小 24%，小字糊成一片 | Tk 的 size 正数是**磅**、负数才是像素，须 `size=-px` |
+| `Label(width=26)` 当像素宽用 | 字号放大后最后一列被裁 | width 单位是**字符数**，表格改 `grid` + `columnconfigure(weight=)` |
+| 同一容器混用 pack 和 grid | `TclError: already has slaves managed by grid` | 一个容器只能选一种几何管理器 |
+| 顶栏 7 个控件单行 `pack(side="right")` | 字号放大后互相挤压溢出 | 拆两排：显示类设置 / 行为类设置 |
+| `minsize` 等于断点值 | 单栏布局永远不可达 | 断点 1080 时 minsize 必须 < 1080（现 880） |
+| 切主题/切语言各自 `Ctx(...)` | 新增字体设置后部分路径漏读 | 统一走 `_make_ctx()`，自检断言禁止直接构造 |
 
 ---
 

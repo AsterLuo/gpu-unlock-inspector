@@ -509,6 +509,45 @@ def test_bundles():
     check("crossboot has bench metrics",
           all(k in panel_src for k in ("self.bn_base", "self.bn_after", "self.bn_gain")),
           "bench metrics missing")
+    # 字体：pt→px 必须真的换算，否则整套字号偏小 24%（历史 bug）
+    from core import theme as _T
+    base_src = open(os.path.join(ROOT, "src", "ui", "base.py"), encoding="utf-8").read()
+    check("pt to px conversion present",
+          "PT_TO_PX" in base_src and "96.0 / 72.0" in open(
+              os.path.join(ROOT, "src", "core", "theme.py"),
+              encoding="utf-8").read(),
+          "font sizes are pt but rendered as px")
+    check("font uses negative size (px)",
+          "size=-int(round(px))" in base_src, "Tk size sign decides pt vs px")
+    check("bold by default", _T.BOLD_BY_DEFAULT is True)
+    check("size boosts defined",
+          set(_T.SIZE_BOOSTS) == {"normal", "large", "xlarge"}, str(_T.SIZE_BOOSTS))
+    check("all boosts >= 1.0",
+          min(_T.SIZE_BOOSTS.values()) >= 1.0, str(_T.SIZE_BOOSTS))
+
+    # 字体设置必须集中在唯一入口，避免某处重建时漏掉
+    check("ctx built through one helper",
+          app_src.count("self._make_ctx()") >= 3
+          and app_src.count("Ctx(self.theme_name, self.tr, self.ctx.scale)") == 0,
+          "some rebuild paths bypass font settings")
+
+    # 判定依据：必须展示实际生效的三层链，不能再列驱动推断时代的 rules
+    dlgsrc = open(os.path.join(ROOT, "src", "ui", "dialogs.py"), encoding="utf-8").read()
+    check("basis dialog exists", "class BasisDialog" in dlgsrc)
+    check("basis shows three tiers",
+          "basis.l1" in dlgsrc and "basis.l2" in dlgsrc and "basis.l3" in dlgsrc,
+          "missing tier copy")
+    check("basis marks veto",
+          "basis.tag.veto" in dlgsrc, "no veto state")
+    # 只看 show_basis 函数体：导出报告里仍会带 rules（那是原始记录，应当保留）
+    _basis_body = app_src.split("def show_basis", 1)[1].split("def ", 1)[0]
+    check("show_basis no longer dumps verdict.rules",
+          "verdict.rules" not in _basis_body,
+          "still rendering deprecated rule table")
+    check("basis lines use grid alignment",
+          "columnconfigure(1, weight=1)" in dlgsrc,
+          "pack-based lines squeeze the value label")
+
     # 首屏：没有实测时必须是「待检测」，且数字不给编造的百分比
     check("pending state has copy",
           "state.pending" in open(os.path.join(ROOT, "src", "i18n", "strings.py"),

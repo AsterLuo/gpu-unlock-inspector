@@ -113,7 +113,8 @@ DARK = {
 
 THEMES = {"light": LIGHT, "dark": DARK}
 
-# 字体层级（对应 CSS 的 h0/h1/h2/lead/body/mono）
+# 字体层级（单位：磅 pt，对应 CSS 的 h0/h1/h2/lead/body/mono）
+# 注意：这是 pt 不是 px。渲染时按 px = pt × 96/72 换算（见 base.Ctx.font）。
 FONTS = {
     "display": 30,
     "h1": 22,
@@ -125,6 +126,13 @@ FONTS = {
     "metric": 34,
     "metric_md": 22,
 }
+
+# pt → px 换算系数（96 DPI 屏幕基准）
+PT_TO_PX = 96.0 / 72.0
+# 默认把字体整体加粗：细体中文在 1080p/125% 缩放下笔画会糊
+BOLD_BY_DEFAULT = True
+# UI 上的字体放大档：1.0 = 设计值，1.15 = 舒适，1.3 = 大字
+SIZE_BOOSTS = {"normal": 1.0, "large": 1.15, "xlarge": 1.3}
 
 # 间距节奏：4pt 基准，8 的倍数为主（= CSS 的 0.25rem 阶梯）
 PAD = {"page": 24, "card": 20, "gap": 16, "tight": 8, "xs": 4, "sm": 8, "md": 12, "lg": 20}
